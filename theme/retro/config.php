@@ -48,3 +48,16 @@ $THEME->requiredblocks = '';
 $THEME->addblockposition = BLOCK_ADDBLOCK_POSITION_FLATNAV;
 
 $THEME->haseditswitch = true;
+
+$THEME->scss = function($theme) {
+    return theme_retro_get_main_scss_content($theme);
+};
+$THEME->layouts = [
+    // The site home page.
+    'frontpage' => [
+        'file' => 'frontpage.php',
+        'regions' => ['side-pre'],
+        'defaultregion' => 'side-pre',
+        'options' => ['nonavbar' => true],
+    ],
+];

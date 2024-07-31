@@ -1,0 +1,13 @@
+{{=<% %>=}}
+<div>
+    <ion-list>
+        <%#issues%>
+            <ion-item>
+                <ion-label>
+                    <p class="item-heading">{{ <%timecreated%> * 1000 | coreFormatDate: 'dffulldate' }}</p>
+                    <p><%grade%></p>
+                </ion-label>
+            </ion-item>
+        <%/issues%>
+    </ion-list>
+</div>

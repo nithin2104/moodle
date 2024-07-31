@@ -273,7 +273,6 @@
     // Include the actual course format.
     require($CFG->dirroot .'/course/format/'. $course->format .'/format.php');
     // Content wrapper end.
-
     echo html_writer::end_tag('div');
 
     // Trigger course viewed event.
