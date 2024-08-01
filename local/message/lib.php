@@ -23,42 +23,42 @@
  */
 
 
-function local_message_before_footer(){
-       global $DB,$USER;
+// function local_message_before_footer(){
+//        global $DB,$USER;
 
-       $sql="select lm.id, lm.messagetext, lm.messagetype from {local_message} lm
-       left outer join {local_message_read} lmr on lm.id=lmr.messageid
-       where lmr.userid <> :userid or lmr.userid is null";
-       $PARAM=[
-              "userid" => $USER->id
-       ];
-       $messages = $DB->get_records_sql($sql, $PARAM);
+//        $sql="select lm.id, lm.messagetext, lm.messagetype from {local_message} lm
+//        left outer join {local_message_read} lmr on lm.id=lmr.messageid
+//        where lmr.userid <> :userid or lmr.userid is null";
+//        $PARAM=[
+//               "userid" => $USER->id
+//        ];
+//        $messages = $DB->get_records_sql($sql, $PARAM);
 
-       // Add a notification of some kind.
-       foreach($messages as $message){
+//        // Add a notification of some kind.
+//        foreach($messages as $message){
 
-              $type=\core\output\notification::NOTIFY_INFO;
-              if($message->messagetype === '0'){
-                     $type=\core\output\notification::NOTIFY_SUCCESS;
-              }
-              else if($message->messagetype  === '1'){
-                     $type=\core\output\notification::NOTIFY_WARNING;
-              }
-              else if($message->messagetype  === '2'){
-                     $type=\core\output\notification::NOTIFY_ERROR;
-              }
-              else{
-                     $type=\core\output\notification::NOTIFY_INFO;
-              }
-              \core\notification::add($message->messagetext, $type);
+//               $type=\core\output\notification::NOTIFY_INFO;
+//               if($message->messagetype === '0'){
+//                      $type=\core\output\notification::NOTIFY_SUCCESS;
+//               }
+//               else if($message->messagetype  === '1'){
+//                      $type=\core\output\notification::NOTIFY_WARNING;
+//               }
+//               else if($message->messagetype  === '2'){
+//                      $type=\core\output\notification::NOTIFY_ERROR;
+//               }
+//               else{
+//                      $type=\core\output\notification::NOTIFY_INFO;
+//               }
+//               \core\notification::add($message->messagetext, $type);
 
-              $now = time();
-              $readrecords=new stdClass();
-              $readrecords->messageid=$message->id;
-              $readrecords->userid=$USER->id;
-              $readrecords->timeread=userdate($now);
-              $DB->insert_record('local_message_read', $readrecords);
+//               $now = time();
+//               $readrecords=new stdClass();
+//               $readrecords->messageid=$message->id;
+//               $readrecords->userid=$USER->id;
+//               $readrecords->timeread=userdate($now);
+//               $DB->insert_record('local_message_read', $readrecords);
 
        
-       }
-}
+//        }
+// }

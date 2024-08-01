@@ -26,10 +26,20 @@
 
 
 {{#messages}}
-<div class="border border-dark border-5 rounded p-1 pl-2 w-25 m-1 mb-2 text-start">
+<div class="border border-dark border-5 rounded p-1 pl-2 w-25 m-1 mb-2 text-center">
 <p>{{messagetext}}</p>
+<div class="d-flex justify-content-around">
 <a href="/moodle/local/message/update.php?id={{id}}" class="btn btn-primary mb-2">{{updatename}}</a>
-<a href="/moodle/local/message/delete.php?id={{id}}" class="btn btn-danger mb-2">{{deletename}}</a>
+<button type="button" 
+    class="btn btn-danger mb-2" 
+    data-modal="confirmation"
+    data-modal-title-str='["delete", "core"]'
+    data-modal-content-str='["areyousure"]'
+    data-modal-yes-button-str='["delete", "core"]'
+    data-modal-destination="/moodle/local/message/delete.php?id={{id}}">
+    Delete
+</button>
+</div>
 </div>
 {{/messages}}
 
