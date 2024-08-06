@@ -32,13 +32,22 @@ $string['pluginname'] = 'Messages plugin';
  $string['updatedform'] = 'You updated form with message as ';
  $string['edittitle'] = 'Edit';
  $string['headingedit'] = 'Message Plugin Form';
- $string['headingmanage'] = 'Message Plugin List of Messages';
+ $string['headingmanage'] = 'Types of Forms and Crud operations';
  $string['managetitle'] = 'Manage';
+ $string['addtitle'] = 'Add Details';
  $string['updatetitle'] = 'Update';
  $string['headingupdate'] = 'Update Message';
- $string['btnname'] = 'Click to add message';
+ $string['createmsg'] = 'Click to add message';
+ $string['viewmsg'] = 'Click to view message';
+ $string['viewtitle'] = 'view messages';
+ $string['actionpage'] = 'action page';
  $string['updatename'] = 'Update';
  $string['deletename'] = 'Delete';
+ $string['message:manage'] = 'manage crud';
+ $string['moodleformtext'] = 'Moodle Form Crud operations Buttons';
+ $string['dynamicformtext'] = 'Dynamic (MODAL) M_Form Crud operations Buttons';
+
+
 
 
 

@@ -21,11 +21,18 @@
  * @copyright 2009 Petr Skoda  {@link http://skodak.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-// moodleform is defined in formslib.php
-require_once("$CFG->libdir/formslib.php");
 
+defined('MOODLE_INTERNAL') || die;
+require_once("$CFG->libdir/formslib.php");
+/**
+ * Summary of edit
+ */
 class edit extends moodleform {
     // Add elements to form.
+    /**
+     * Summary of definition
+     * @return void
+     */
     public function definition() {
         // A reference to the form is stored in $this->form.
         // A common convention is to store it in a variable, such as `$mform`.
@@ -34,23 +41,30 @@ class edit extends moodleform {
         // Add elements to your form.
         $mform->addElement('hidden', 'id', 'yes');
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('text', 'messagetext',get_string('messagetext','local_message'),['placeholder' => 'Enter message']);
+        $mform->addElement('text', 'messagetext', get_string('messagetext', 'local_message'), ['placeholder' => 'Enter message']);
         $mform->setType('messagetext', PARAM_NOTAGS);
 
-        $choices=array();
-        $choices['0']=\core\output\notification::NOTIFY_SUCCESS;
-        $choices['1']=\core\output\notification::NOTIFY_WARNING;
-        $choices['2']=\core\output\notification::NOTIFY_ERROR;
-        $choices['3']=\core\output\notification::NOTIFY_INFO;
+        $choices = [
+            $choices['0'] = \core\output\notification::NOTIFY_SUCCESS,
+            $choices['1'] = \core\output\notification::NOTIFY_WARNING,
+            $choices['2'] = \core\output\notification::NOTIFY_ERROR,
+            $choices['3'] = \core\output\notification::NOTIFY_INFO,
+        ];
 
-        $mform->addElement('select','messagetype',get_string('messagetype','local_message'),$choices);
-        $mform->setDefault("messagetype", get_string('defaultvalue','local_message'));
+        $mform->addElement('select', 'messagetype', get_string('messagetype', 'local_message'), $choices);
+        $mform->setDefault("messagetype", get_string('defaultvalue', 'local_message'));
 
-        $this->add_action_buttons(1,$Submitlabel=get_string('submit','local_message'));
+        $this->add_action_buttons(1, get_string('submit', 'local_message'));
     }
 
     // Custom validation should be added here.
-    function validation($data, $files) {
+    /**
+     * Summary of validation
+     * @param mixed $data
+     * @param mixed $files
+     * @return array
+     */
+    public function validation($data, $files) {
         return [];
     }
 }

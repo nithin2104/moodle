@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -30,20 +29,19 @@
 
  $PAGE->set_url("/local/message/edit.php");
  $PAGE->set_context(context_system::instance());
- $PAGE->set_title(get_string('edittitle','local_message'));
- $PAGE->set_heading(get_string('headingedit','local_message'));
+ $PAGE->set_title(get_string('edittitle', 'local_message'));
+ $PAGE->set_heading(get_string('headingedit', 'local_message'));
 
-$mform=new edit();
+$mform = new edit();
 
 if ($mform->is_cancelled()) {
-    redirect($CFG->wwwroot ."/local/message/manage.php",get_string('cancelform','local_message') );
+    redirect($CFG->wwwroot . "/local/message/manage.php", get_string('cancelform', 'local_message') );
 } else if ($fromform = $mform->get_data()) {
-    $recordtoinsert = new stdClass();    
+    $recordtoinsert = new stdClass();
     $recordtoinsert->messagetext = $fromform->messagetext;
     $recordtoinsert->messagetype = $fromform->messagetype;
     $DB->insert_record('local_message', $recordtoinsert);
-    redirect($CFG->wwwroot ."/local/message/manage.php",get_string('submitform','local_message'). $fromform->messagetext);
-    
+    redirect($CFG->wwwroot ."/local/message/manage.php", get_string('submitform', 'local_message'). $fromform->messagetext);
 } else {
     $mform->set_data($fromform);
     // Display the form.

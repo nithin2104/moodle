@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -23,17 +22,17 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- require_once(__DIR__ ."/../../config.php");
+require_once(__DIR__ ."/../../config.php");
 
- global $DB,$result;
+global $DB;
 
- $PAGE->set_url("/local/message/delete.php");
- $id=optional_param("id",0, PARAM_INT);
+$PAGE->set_url("/local/message/delete.php");
+$id = optional_param("id", 0, PARAM_INT);
 
+$result = $DB->delete_records('local_message', ['id' => $id]);
+$result = $DB->delete_records('local_message_read', ['messageid' => $id]);
+if ($result) {
+    redirect($CFG->wwwroot ."/local/message/viewmsg.php", get_string('deletedrecord', 'local_message') );
 
- $result = $DB->delete_records('local_message',array('id'=>$id));
- $result = $DB->delete_records('local_message_read',array('messageid'=>$id));
- if($result) {
-    redirect($CFG->wwwroot ."/local/message/manage.php",get_string('deletedrecord','local_message') );
+}
 
- }

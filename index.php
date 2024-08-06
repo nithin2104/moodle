@@ -33,7 +33,7 @@ require_once($CFG->libdir .'/filelib.php');
 
 redirect_if_major_upgrade_required();
 
-$urlparams = array();
+$urlparams = [];
 if (!empty($CFG->defaulthomepage) &&
         ($CFG->defaulthomepage == HOMEPAGE_MY || $CFG->defaulthomepage == HOMEPAGE_MYCOURSES) &&
         optional_param('redirect', 1, PARAM_BOOL) === 0
@@ -83,13 +83,13 @@ if (get_home_page() != HOMEPAGE_SITE) {
         if ($frontpagenode) {
             $frontpagenode->add(
                 get_string('makethismyhome'),
-                new moodle_url('/', array('setdefaulthome' => true)),
+                new moodle_url('/', ['setdefaulthome' => true]),
                 navigation_node::TYPE_SETTING);
         } else {
             $frontpagenode = $PAGE->settingsnav->add(get_string('frontpagesettings'), null, navigation_node::TYPE_SETTING, null);
             $frontpagenode->force_open();
             $frontpagenode->add(get_string('makethismyhome'),
-                new moodle_url('/', array('setdefaulthome' => true)),
+                new moodle_url('/', ['setdefaulthome' => true]),
                 navigation_node::TYPE_SETTING);
         }
     }

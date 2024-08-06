@@ -15,15 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Folder module version information
+ * Capability definitions for Messages plugin
  *
- * @package   local_message
- * @copyright 2009 Petr Skoda  {@link http://skodak.org}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Documentation: {@link https://moodledev.io/docs/apis/subsystems/access}
+ *
+ * @package    local_message
+ * @category   access
+ * @copyright  2024 LMSCloud.io
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022041905;       // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041200;    // Requires this Moodle version.
-$plugin->component = 'local_message';     // Full name of the plugin (used for diagnostics)
+$capabilities = [
+    'local/message:manage' => [
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'users' => CAP_ALLOW,
+        ],
+    ],
+];

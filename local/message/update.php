@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -23,66 +22,56 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- require_once(__DIR__ ."/../../config.php");
- require_once($CFG->dirroot . "/local/message/classes/form/edit.php");
+require_once(__DIR__ . "/../../config.php");
+require_once($CFG->dirroot . "/local/message/classes/form/edit.php");
 
- global $DB,$USER,$result;
+global $DB, $USER, $result;
 
- $PAGE->set_url("/local/message/update.php");
- $id=optional_param("id",0, PARAM_INT);
- $PAGE->set_context(context_system::instance());
- $PAGE->set_title(get_string('updatetitle','local_message'));
- $PAGE->set_heading(get_string('headingupdate','local_message'));
+$PAGE->set_url("/local/message/update.php");
+$id = optional_param("id", 0, PARAM_INT);
+$PAGE->set_context(context_system::instance());
+$PAGE->set_title(get_string('updatetitle', 'local_message'));
+$PAGE->set_heading(get_string('headingupdate', 'local_message'));
 
 
 
- $result = $DB->get_record('local_message', array('id'=>$id));
+$result = $DB->get_record('local_message', array('id' => $id));
 
- $mform = new edit();
+$mform = new edit();
 
-//  var_dump($iid);
-//  die;
 
-  
+if ($mform->is_cancelled()) {
+    redirect($CFG->wwwroot . "/local/message/manage.php", get_string('cancelform', 'local_message'));
+} else if ($fromform = $mform->get_data()) {
 
- if ($mform->is_cancelled()) {
-  redirect($CFG->wwwroot ."/local/message/manage.php",get_string('cancelform','local_message') );
-} 
-else if ($fromform=$mform->get_data()) {
+    $updaterecord = new stdClass();
+    $updaterecord->id = $fromform->id;
+    $updaterecord->messagetext = $fromform->messagetext;
+    $updaterecord->messagetype = $fromform->messagetype;
 
-  $updaterecord = new stdClass();    
-  $updaterecord->id = $fromform->id;
-  $updaterecord->messagetext = $fromform->messagetext;
-  $updaterecord->messagetype = $fromform->messagetype;
-  
-  $DB->update_record('local_message', $updaterecord,false);
-  redirect($CFG->wwwroot ."/local/message/manage.php",get_string('updatedform','local_message'). $fromform->messagetext);
-  
-} 
-else
-{
-  $mform->set_data($fromform);
-  
+    $DB->update_record('local_message', $updaterecord, false);
+    redirect($CFG->wwwroot . "/local/message/viewmsg.php", get_string('updatedform', 'local_message') . $fromform->messagetext);
+
+} else {
+    $mform->set_data($fromform);
+
 }
 
 
 
- echo $OUTPUT->header();
+echo $OUTPUT->header();
 
 
- if($result->messagetype === '0'){
-  $mform->set_data(array('id'=> $result->id,'messagetext'=> $result->messagetext,'messagetype'=>'0'));
- }
- else if($result->messagetype === '1'){
-  $mform->set_data(array('id'=> $result->id,'messagetext'=> $result->messagetext,'messagetype'=>'1'));
- }
- else if($result->messagetype === '2'){
-  $mform->set_data(array('id'=> $result->id,'messagetext'=> $result->messagetext,'messagetype'=>'2'));
- }
- else{
-  $mform->set_data(array('id'=> $result->id,'messagetext'=> $result->messagetext,'messagetype'=>'3'));
- }
+if ($result->messagetype === '0') {
+    $mform->set_data(['id' => $result->id, 'messagetext' => $result->messagetext, 'messagetype' => '0']);
+} else if ($result->messagetype === '1') {
+    $mform->set_data(['id' => $result->id, 'messagetext' => $result->messagetext, 'messagetype' => '1']);
+} else if ($result->messagetype === '2') {
+    $mform->set_data(['id' => $result->id, 'messagetext' => $result->messagetext, 'messagetype' => '2']);
+} else {
+    $mform->set_data(['id' => $result->id, 'messagetext' => $result->messagetext, 'messagetype' => '3']);
+}
 
- $mform->display();
-  
- echo $OUTPUT->footer();
+$mform->display();
+
+echo $OUTPUT->footer();

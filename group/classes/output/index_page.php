@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace core_group\output;
+use context_course;
 defined('MOODLE_INTERNAL') || die();
 
 use renderable;
@@ -105,6 +106,8 @@ class index_page implements renderable, templatable {
         $data->groups = $this->groups;
         $data->members = $this->selectedgroupmembers;
         $data->selectedgroup = $this->selectedgroupname;
+        $context = context_course::instance($this->courseid);
+        $data->contextid = $context->id;
 
         return $data;
     }

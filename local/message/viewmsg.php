@@ -15,34 +15,36 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Folder module version information
+ * TODO describe file viewmsg
  *
- * @package   local_message
- * @copyright 2009 Petr Skoda  {@link http://skodak.org}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    local_message
+ * @copyright  2024 LMSCloud.io
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ ."/../../config.php");
+require_once(__DIR__ . "/../../config.php");
 
 global $DB;
 
-$PAGE->set_url("/local/message/manage.php");
+$PAGE->set_url("/local/message/viewmsg.php");
 $PAGE->set_context(context_system::instance());
-$PAGE->requires->js_call_amd('local_message/messageform', 'init');
 require_login();
 
-$PAGE->set_title(get_string('managetitle', 'local_message'));
-$PAGE->set_heading(get_string('headingmanage', 'local_message'));
+$PAGE->set_title(get_string('viewtitle', 'local_message'));
+$PAGE->set_heading(get_string('viewtitle', 'local_message'));
 
+$result = $DB->get_records("local_message");
+$records = array_values($result);
 echo $OUTPUT->header();
 
 $templatecontext = [
-    "createmsg" => get_string('createmsg', 'local_message'),
-    "viewmsg" => get_string('viewmsg', 'local_message'),
-    "createmsgurl" => new moodle_url("/local/message/edit.php"),
-    "viewmsgurl" => new moodle_url("/local/message/viewmsg.php"),
+    "messages" => $records,
+    "actionpage" => get_string('actionpage', 'local_message'),
+    "updatename" => get_string('updatename', 'local_message'),
+    "deletename" => get_string('deletename', 'local_message'),
+    "manageurl" => new moodle_url('/local/message/manage.php'),
 ];
 
-echo $OUTPUT->render_from_template("local_message/manage", $templatecontext);
+echo $OUTPUT->render_from_template("local_message/viewmsg", $templatecontext);
 
 echo $OUTPUT->footer();
