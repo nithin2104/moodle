@@ -32,7 +32,6 @@ use core_form\dynamic_form;
 use moodle_url;
 use context;
 use context_system;
-use html_writer;
 use local_message\manager as manager;
 
 /**
@@ -55,8 +54,8 @@ class message_form extends dynamic_form {
         $editoroptions = $this->_customdata['editoroptions'];
 
         $mform->addElement('filemanager', 'profile', "Profile", null,
-                   ['subdirs' => 0, 'maxbytes' => 123456789, 'areamaxbytes' => 10485760, 'maxfiles' => 1,
-                          'accepted_types' => ['jpg', 'jpeg', 'png']]);
+                   ['subdirs' => 0, 'maxbytes' => $maxbytes, 'areamaxbytes' => 10485760, 'maxfiles' => 1,
+                   'accepted_types' => ['jpg', 'jpeg', 'png'], ]);
 
         $mform->addElement('text', 'firstname', "First Name ");
         $mform->addRule('firstname', "Required", 'required', null);
@@ -139,7 +138,7 @@ class message_form extends dynamic_form {
         $data = (new manager)->get_message_records($id);
         if (!empty($data)) {
                 $textfieldoptions = ['trusttext' => true, 'subdirs' => true, 'maxfiles' => -1, 'maxbytes' => $CFG->maxbytes,
-                'context' => $context];
+                'context' => $context, ];
                 $data = file_prepare_standard_editor(
                     // The existing data.
                     $data,

@@ -22,43 +22,79 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use local_message\manager as manager;
 
-// function local_message_before_footer(){
-//        global $DB,$USER;
+/**
+ * Summary of local_message_before_footer
+ * @return void
+ */
+function local_message_before_footer() {
+    global $DB, $USER;
 
-//        $sql="select lm.id, lm.messagetext, lm.messagetype from {local_message} lm
-//        left outer join {local_message_read} lmr on lm.id=lmr.messageid
-//        where lmr.userid <> :userid or lmr.userid is null";
-//        $PARAM=[
-//               "userid" => $USER->id
-//        ];
-//        $messages = $DB->get_records_sql($sql, $PARAM);
+    $sql = "select lm.id, lm.messagetext, lm.messagetype from {local_message} lm
+       left outer join {local_message_read} lmr on lm.id=lmr.messageid
+       where lmr.userid <> :userid or lmr.userid is null";
+    $param = [
+        "userid" => $USER->id,
+    ];
+    $messages = $DB->get_records_sql($sql, $param);
 
-//        // Add a notification of some kind.
-//        foreach($messages as $message){
+    // Add a notification of some kind.
+    foreach ($messages as $message) {
+        $type = \core\output\notification::NOTIFY_INFO;
+        if ($message->messagetype === '0') {
+            $type = \core\output\notification::NOTIFY_SUCCESS;
+        } else if ($message->messagetype === '1') {
+            $type = \core\output\notification::NOTIFY_WARNING;
+        } else if ($message->messagetype === '2') {
+            $type = \core\output\notification::NOTIFY_ERROR;
+        } else {
+            $type = \core\output\notification::NOTIFY_INFO;
+        }
+        \core\notification::add($message->messagetext, $type);
 
-//               $type=\core\output\notification::NOTIFY_INFO;
-//               if($message->messagetype === '0'){
-//                      $type=\core\output\notification::NOTIFY_SUCCESS;
-//               }
-//               else if($message->messagetype  === '1'){
-//                      $type=\core\output\notification::NOTIFY_WARNING;
-//               }
-//               else if($message->messagetype  === '2'){
-//                      $type=\core\output\notification::NOTIFY_ERROR;
-//               }
-//               else{
-//                      $type=\core\output\notification::NOTIFY_INFO;
-//               }
-//               \core\notification::add($message->messagetext, $type);
+        $now = time();
+        $readrecords = new stdClass();
+        $readrecords->messageid = $message->id;
+        $readrecords->userid = $USER->id;
+        $readrecords->timeread = userdate($now);
+        $DB->insert_record('local_message_read', $readrecords);
+    }
+}
+/**
+ * Summary of local_message_pluginfile
+ * @param mixed $course
+ * @param mixed $cm
+ * @param mixed $context
+ * @param mixed $filearea
+ * @param mixed $args
+ * @param mixed $forcedownload
+ * @param array $options
+ */
+function local_message_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
 
-//               $now = time();
-//               $readrecords=new stdClass();
-//               $readrecords->messageid=$message->id;
-//               $readrecords->userid=$USER->id;
-//               $readrecords->timeread=userdate($now);
-//               $DB->insert_record('local_message_read', $readrecords);
+    $fs = get_file_storage();
+    $file = $fs->get_file($context->id, 'local_message', $filearea, $args[0], '/', $args[1]);
 
-       
-//        }
-// }
+    send_stored_file($file);
+}
+
+/**
+ * local_message_output_fragment_message
+ *
+ * @param mixed $args
+ * @return mixed
+ */
+function local_message_output_fragment_message($args) {
+    global $DB, $OUTPUT;
+
+    $id = $args['id'];
+    $details = (new manager())->view_details($id);
+
+    $contextdetails = [
+        'details' => array_values($details),
+    ];
+    return $OUTPUT->render_from_template('local_message/details', $contextdetails);
+
+}
+

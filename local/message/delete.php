@@ -24,6 +24,7 @@
 
 require_once(__DIR__ ."/../../config.php");
 
+require_login();
 global $DB;
 
 $PAGE->set_url("/local/message/delete.php");

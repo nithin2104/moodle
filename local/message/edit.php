@@ -25,6 +25,7 @@
  require_once(__DIR__ ."/../../config.php");
  require_once($CFG->dirroot . "/local/message/classes/form/edit.php");
 
+ require_login();
  global $DB;
 
  $PAGE->set_url("/local/message/edit.php");
@@ -45,7 +46,7 @@ if ($mform->is_cancelled()) {
 } else {
     $mform->set_data($fromform);
     // Display the form.
-    // $mform->display();
+    // $mform->display();.
 }
 
 echo $OUTPUT->header();

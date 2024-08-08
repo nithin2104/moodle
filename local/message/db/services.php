@@ -15,15 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Folder module version information
+ * External functions and service declaration for Messages plugin
  *
- * @package   local_message
- * @copyright 2009 Petr Skoda  {@link http://skodak.org}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Documentation: {@link https://moodledev.io/docs/apis/subsystems/external/description}
+ *
+ * @package    local_message
+ * @category   webservice
+ * @copyright  2024 LMSCloud.io
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022041906;    // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041200;    // Requires this Moodle version.
-$plugin->component = 'local_message';   // Full name of the plugin (used for diagnostics).
+$functions = [
+    'local_message_delete_record' => [
+        'classname' => 'local_message\external\delete_record',
+        'methodsname' => 'execute',
+        'classpath' => 'local/messgae/classes/external/delete_record.php',
+        'description' => 'Delete Record',
+        'type' => 'read',
+        'ajax' => true,
+    ],
+];

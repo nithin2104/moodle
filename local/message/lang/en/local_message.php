@@ -30,7 +30,7 @@ $string['pluginname'] = 'Messages plugin';
  $string['deletedrecord'] = 'You deleted a message.';
  $string['submitform'] = 'You submitted form with message as ';
  $string['updatedform'] = 'You updated form with message as ';
- $string['edittitle'] = 'Edit';
+ $string['edittitle'] = 'Edit Record {$a}';
  $string['headingedit'] = 'Message Plugin Form';
  $string['headingmanage'] = 'Types of Forms and Crud operations';
  $string['managetitle'] = 'Manage';
@@ -39,13 +39,24 @@ $string['pluginname'] = 'Messages plugin';
  $string['headingupdate'] = 'Update Message';
  $string['createmsg'] = 'Click to add message';
  $string['viewmsg'] = 'Click to view message';
- $string['viewtitle'] = 'view messages';
+ $string['viewtitle'] = 'View Messages';
+ $string['viewdetails'] = 'View Details';
  $string['actionpage'] = 'action page';
  $string['updatename'] = 'Update';
  $string['deletename'] = 'Delete';
  $string['message:manage'] = 'manage crud';
  $string['moodleformtext'] = 'Moodle Form Crud operations Buttons';
  $string['dynamicformtext'] = 'Dynamic (MODAL) M_Form Crud operations Buttons';
+ $string['profile'] = 'Profile';
+ $string['fullname'] = 'Full Name';
+ $string['description'] = 'Description';
+ $string['timecreated'] = 'Time Created';
+ $string['timeupdated'] = 'Time Updated';
+ $string['userid'] = 'User Id';
+ $string['actions'] = 'Actions';
+ $string['areyousure'] = 'Are you sure? {$a}.';
+ $string['emptyid'] = 'Id is not passed along with delete record.';
+
 
 
 

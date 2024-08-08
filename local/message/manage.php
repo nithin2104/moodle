@@ -22,26 +22,33 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ ."/../../config.php");
+require_once(__DIR__ . "/../../config.php");
+
+use local_message\manager as manager;
 
 global $DB;
 
 $PAGE->set_url("/local/message/manage.php");
-$PAGE->set_context(context_system::instance());
+$context = context_system::instance();
+$PAGE->set_context($context);
 $PAGE->requires->js_call_amd('local_message/messageform', 'init');
 require_login();
 
 $PAGE->set_title(get_string('managetitle', 'local_message'));
 $PAGE->set_heading(get_string('headingmanage', 'local_message'));
 
-echo $OUTPUT->header();
-
+if (has_capability('local/message:manage', $context)) {
+    $result = (new manager)->get_details();
+}
 $templatecontext = [
+    "details" => array_values($result),
     "createmsg" => get_string('createmsg', 'local_message'),
     "viewmsg" => get_string('viewmsg', 'local_message'),
     "createmsgurl" => new moodle_url("/local/message/edit.php"),
     "viewmsgurl" => new moodle_url("/local/message/viewmsg.php"),
 ];
+echo $OUTPUT->header();
+
 
 echo $OUTPUT->render_from_template("local_message/manage", $templatecontext);
 

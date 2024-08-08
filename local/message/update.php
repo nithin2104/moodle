@@ -25,6 +25,7 @@
 require_once(__DIR__ . "/../../config.php");
 require_once($CFG->dirroot . "/local/message/classes/form/edit.php");
 
+require_login();
 global $DB, $USER, $result;
 
 $PAGE->set_url("/local/message/update.php");
@@ -35,7 +36,7 @@ $PAGE->set_heading(get_string('headingupdate', 'local_message'));
 
 
 
-$result = $DB->get_record('local_message', array('id' => $id));
+$result = $DB->get_record('local_message', ['id' => $id]);
 
 $mform = new edit();
 

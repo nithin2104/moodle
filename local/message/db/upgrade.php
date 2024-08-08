@@ -93,6 +93,5 @@ function xmldb_local_message_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2022041905, 'local', 'message');
     }
 
-
     return true;
 }

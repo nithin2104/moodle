@@ -85,9 +85,9 @@ class manager {
         ];
         $item = $data->profile;
         file_save_draft_area_files($item, $context->id, 'local_message', 'profile', $item,
-        ['subdirs' => '', 'maxfiles' => 6]);
+        ['subdirs' => '', 'maxfiles' => 6], null, true);
+
         if ($data->id > 0) {
-            $data->timecreated = $this->timecreated;
             $data->timeupdated = $this->timeupdated;
             $data->userid = $this->userid;
             $data = file_postupdate_standard_editor($data, 'description', $textfileoptions, $context, 'local_message',
@@ -108,6 +108,7 @@ class manager {
                 'description',
                 $data->id
             );
+
         }
         $DB->update_record('local_message_crud', $data);
 
@@ -115,12 +116,74 @@ class manager {
     /**
      * Summary of get_records
      * @param int $id
-     * @return mixed
+     * @return array
      */
     public function get_message_records($id) {
         global $DB;
 
         return $DB->get_record('local_message_crud', ['id' => $id], '*');
+    }
+    /**
+     * Summary of get_details
+     * @return array
+     */
+    public function get_details() {
+        global $DB;
+        $context = context_system::instance();
+        $result = $DB->get_records('local_message_crud');
+        $resultset = [];
+        foreach ($result as $rec) {
+            $viewrec = new stdClass();
+            $viewrec->id = $rec->id;
+            $profileid = $rec->profile;
+            $viewrec->fullname = $rec->firstname.' '.$rec->lastname;
+            $viewrec->description = $rec->description;
+            $fs = get_file_storage();
+            $files = $fs->get_area_files($context->id, 'local_message', 'profile', $profileid);
+            if ($files) {
+                foreach ($files as $file) {
+                    $fileurl = moodle_url::make_pluginfile_url( $file->get_contextid(),
+                                                                $file->get_component(),
+                                                                $file->get_filearea(),
+                                                                $file->get_itemid(),
+                                                                $file->get_filepath(),
+                                                                $file->get_filename());
+                    $profileurl = $fileurl->get_port() ? $fileurl->get_scheme() . '://' . $fileurl->get_host() .
+                    $fileurl->get_path() . ':' . $fileurl->get_port() : $fileurl->get_scheme() . '://' . $fileurl->get_host() .
+                    $fileurl->get_path();
+                    $viewrec->profile = $profileurl;
+                }
+            }
+            $resultset[] = $viewrec;
+        }
+        return $resultset;
+    }
+
+    /**
+     * Summary of view_details
+     * @param mixed $id
+     * @return array
+     */
+    public function view_details($id) {
+        global $DB;
+
+        return $DB->get_records('local_message_crud', ['id' => $id]);
+    }
+
+    /**
+     * Summary of delete_record_id
+     * @param int $id
+     * @return bool
+     */
+    public function delete_record_id($id) {
+        global $DB;
+
+        try {
+            $DB->delete_records('local_message_crud', ['id' => $id]);
+        } catch (dml_exception $e) {
+            print($e);
+        }
+        return true;
     }
 
 }
