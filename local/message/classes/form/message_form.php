@@ -112,7 +112,7 @@ class message_form extends dynamic_form {
      * Checks if current user has access to this form, otherwise throws exception
      */
     protected function check_access_for_dynamic_submission(): void {
-        require_capability('local/message:manage', $this->get_context_for_dynamic_submission());
+        require_capability('local/greetings:viewmessages', $this->get_context_for_dynamic_submission());
     }
 
     /**

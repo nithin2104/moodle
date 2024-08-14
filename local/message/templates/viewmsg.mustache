@@ -31,6 +31,7 @@
 <div class="d-flex">
 <p class="m-0">{{messagetext}}</p>
 </div>
+{{#manage}}
 <div class="d-flex flex-row">
 <a href="/moodle/local/message/update.php?id={{id}}" class="mx-2"><i class="fa fa-pencil fa-fw" title="{{updatename}}" aria-hidden="true"></i></a>
 <a type="button"
@@ -43,6 +44,7 @@
    {{#pix}} t/delete, core, {{deletename}} {{/pix}}
 </a>
 </div>
+{{/manage}}
 
 </div>
 {{/messages}}

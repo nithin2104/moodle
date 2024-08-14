@@ -26,19 +26,31 @@ require_once(__DIR__ . "/../../config.php");
 
 global $DB;
 
+$context = context_system::instance();
+$PAGE->set_context($context);
 $PAGE->set_url("/local/message/viewmsg.php");
-$PAGE->set_context(context_system::instance());
-require_login();
 
 $PAGE->set_title(get_string('viewtitle', 'local_message'));
 $PAGE->set_heading(get_string('viewtitle', 'local_message'));
 
+require_login();
+if (isguestuser()) {
+    throw new moodle_exception('Guest users not allowed');
+}
+
+if (has_capability('local/message:manage', $context)) {
+    $manage = true;
+} else {
+    $manage = false;
+}
 $result = $DB->get_records("local_message");
 $records = array_values($result);
+
 echo $OUTPUT->header();
 
 $templatecontext = [
     "messages" => $records,
+    'manage' => $manage,
     "actionpage" => get_string('actionpage', 'local_message'),
     "updatename" => get_string('updatename', 'local_message'),
     "deletename" => get_string('deletename', 'local_message'),

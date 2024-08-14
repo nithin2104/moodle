@@ -1,4 +1,5 @@
 <?php
+use function PHPUnit\Framework\throwException;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -32,16 +33,26 @@ $PAGE->set_url("/local/message/manage.php");
 $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->requires->js_call_amd('local_message/messageform', 'init');
-require_login();
-
 $PAGE->set_title(get_string('managetitle', 'local_message'));
 $PAGE->set_heading(get_string('headingmanage', 'local_message'));
 
-if (has_capability('local/message:manage', $context)) {
-    $result = (new manager)->get_details();
+require_login();
+
+if (isguestuser()) {
+    throw new moodle_exception('Guest users not allowed!');
 }
+
+if (has_capability('local/message:manage', $context)) {
+    $manage = true;
+} else {
+    $manage = false;
+}
+
+$result = (new manager)->get_details();
+
 $templatecontext = [
     "details" => array_values($result),
+    'manage' => $manage,
     "createmsg" => get_string('createmsg', 'local_message'),
     "viewmsg" => get_string('viewmsg', 'local_message'),
     "createmsgurl" => new moodle_url("/local/message/edit.php"),

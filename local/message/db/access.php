@@ -29,11 +29,11 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
     'local/message:manage' => [
-        'riskbitmask' => RISK_SPAM,
+        'riskbitmask' => RISK_SPAM, RISK_DATALOSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'users' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
         ],
     ],
 ];
