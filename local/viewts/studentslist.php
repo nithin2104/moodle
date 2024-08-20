@@ -46,7 +46,7 @@ $thingnode = $previewnode->add(
     new moodle_url('/local/viewts/studentslist.php'),
 );
 $thingnode->make_active();
-$sql = "SELECT c.id, c.fullname, c.shortname FROM {course} c 
+$sql = "SELECT c.id, c.fullname, c.shortname FROM {course} c
         JOIN {enrol} e ON e.courseid = c.id
         JOIN {user_enrolments} ue ON ue.enrolid = e.id WHERE ue.userid = :userid and (c.visible <> :visible and c.id <> :cid);";
 $courses = $DB->get_records_sql($sql, ['userid' => $USER->id, 'visible' => 0, 'cid' => 1]);

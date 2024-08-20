@@ -57,10 +57,10 @@ $contextid = CONTEXT_COURSE::instance($cid);
 $contid = (int) $contextid->id;
 
 
-$sql = "SELECT u.id, u.firstname, u.lastname 
-        FROM {user} u 
-        JOIN {role_assignments} re ON u.id = re.userid 
-        JOIN {user_enrolments} ue ON u.id = ue.userid 
+$sql = "SELECT u.id, u.firstname, u.lastname
+        FROM {user} u
+        JOIN {role_assignments} re ON u.id = re.userid
+        JOIN {user_enrolments} ue ON u.id = ue.userid
         JOIN {enrol} e ON ue.enrolid = e.id WHERE e.courseid = :cid and (re.roleid = :roleid and re.contextid = :contextid);";
 $courseusers = $DB->get_records_sql($sql, ['roleid' => 5, 'cid' => $cid, 'contextid' => $contid]);
 
