@@ -24,7 +24,7 @@ namespace local_codechecker;
  * @copyright  2022 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class locallib_test extends \basic_testcase {
+final class locallib_test extends \basic_testcase {
 
     /**
      * Data provider for test_local_codechecker_find_other_files()
@@ -111,7 +111,7 @@ class locallib_test extends \basic_testcase {
      * @covers ::local_codechecker_find_other_files
      */
     public function test_local_codechecker_find_other_files(string $path, array $ignores,
-            array $extensions, array $matches, array $nomatches) {
+            array $extensions, array $matches, array $nomatches): void {
 
         global $CFG;
         require_once(__DIR__ . '/../locallib.php');
@@ -149,7 +149,7 @@ class locallib_test extends \basic_testcase {
      *
      * @covers ::local_codechecker_check_other_file
      */
-    public function test_local_codechecker_check_other_file() {
+    public function test_local_codechecker_check_other_file(): void {
 
         require_once(__DIR__ . '/../locallib.php');
 

@@ -1,3 +1,69 @@
+Changes in version 5.0.8 (20240705) - Refreshing summer
+-------------------------------------------------------
+- Bundled dependencies updated:
+  - Moodle CS v3.4.10
+
+Changes in version 5.0.7 (20240614) - It's a small world
+--------------------------------------------------------
+- Bundled dependencies updated:
+  - Moodle CS v3.4.8
+
+Changes in version 5.0.6 (20240531) - Bye, May!
+-----------------------------------------------
+- Bundled dependencies updated:
+  - Moodle CS v3.4.7
+  - PHP Compatibility 96072c30
+  - PHP CodeSniffer 3.10.1
+  - PHPCS Utils 1.0.12
+
+Changes in version 5.0.5 (20240410) - Fools plus 9
+--------------------------------------------------
+- Bundled dependencies updated:
+  - Moodle CS v3.4.6
+  - PHP Compatibility e5cd2e24
+  - PHP CodeSniffer 3.9.1
+  - PHPCS Utils 1.0.10
+
+Changes in version 5.0.4 (20240126) - Depend-a-bot
+--------------------------------------------------
+- First steps towards managing dependencies automatically with Dependabot.
+- Bundled dependencies updated:
+  - Moodle CS updated to v3.3.14.
+  - PHP CodeSniffer updated to 3.8.1.
+
+Changes in version 5.0.3 (20231219) - Bumping bumps
+---------------------------------------------------
+- Bundled dependencies updated:
+  - PHP CodeSniffer updated to 3.8.0.
+  - PHP Compatibility updated to 306cd263.
+  - PHPCS Extra updated to 1.2.1.
+  - PHPCS Utils updated to 1.0.9.
+  - Moodle CS updated to v3.3.12.
+
+Changes in version 5.0.2 (20231129) - Mainly main
+-------------------------------------------------
+- This repository has moved its default branch [from "master" to "main"](https://github.com/moodlehq/moodle-local_codechecker/issues/225).
+- Tests updated to suit Moodle 4.4dev requirements.
+- Bundled dependencies updated:
+  - [moodle-cs](https://github.com/moodlehq/moodle-cs) updated to [v3.3.11](https://github.com/moodlehq/moodle-cs/releases/tag/v3.3.11).
+
+Changes in version 5.0.1 (20231020) - Daddy's birthday
+------------------------------------------------------
+- Added `MOODLE_403_STABLE` tests.
+- Bundled dependencies updated:
+  - [moodle-cs](https://github.com/moodlehq/moodle-cs) updated to [v3.3.10](https://github.com/moodlehq/moodle-cs/releases/tag/v3.3.10).
+
+Changes in version 5.0.0 (20230926) - Cinque, this is cinque!
+-------------------------------------------------------------
+- IMPORTANT - New (raised) requirements:
+  - PHP 7.4 and up supported (previously PHP 7.0 and up).
+  - Moodle v3.8.3 and up supported (previously Moodle v3.7.0).
+- Changed the process to build the plugin. Until now it was a tedious process, manually copying all the dependencies within the plugin (`PHP_CodeSniffer`, `PHPCompatibility`, `PHPCSExtra`, `PHPCSUtil` and `moodle-cs`). Now all the dependencies are managed via Composer and the plugin comes with the `vendor` directory ready to be used.
+- This change has been applied for improving the release process, and towards 100% automating it, now that the plugin is just a Web/CLI wrapper over all the tools listed above.
+- The old 4.x series will not receive more updates (unless absolutely needed).
+- Bundled dependencies updated:
+  - [moodle-cs](https://github.com/moodlehq/moodle-cs) updated to [v3.3.9](https://github.com/moodlehq/moodle-cs/releases/tag/v3.3.9).
+
 Changes in version 4.0.8 (20230923) - Few hours later
 -----------------------------------------------------
 - Bundled dependencies updated:
@@ -100,7 +166,7 @@ Changes in version 3.0.3 (20211130) - Cyber releasing
 -----------------------------------------------------
 - Various internal changes and improvements:
     - Own conformance with new [PHPUnit naming rules](https://docs.moodle.org/dev/PHPUnit_integration#Actual_.28Moodle_3.11_and_up.29).
-    - New [MoodleUtil](https://github.com/moodlehq/moodle-local_codechecker/blob/master/moodle/Util/MoodleUtil.php) class to be able to detect Moodle dir root, branch and components (calculated or imported) within code checker. This new awareness will help improving various sniffs.
+    - New [MoodleUtil](https://github.com/moodlehq/moodle-local_codechecker/blob/main/moodle/Util/MoodleUtil.php) class to be able to detect Moodle dir root, branch and components (calculated or imported) within code checker. This new awareness will help improving various sniffs.
     - Drop some Moodle own &lt; 3.7 testing. Code checker continues supporting Moodle 3.4 and up.
     - Improvements to the base test case, now able to automatically verify `phpcbf` fixes.
     - Bye, bye to Travis for self-tests. Now relying only on GHA.
