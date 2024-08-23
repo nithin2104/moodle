@@ -24,6 +24,8 @@
 
 use local_message\manager as manager;
 
+
+
 /**
  * Summary of local_message_before_footer
  * @return void

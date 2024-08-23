@@ -44,7 +44,7 @@ function xmldb_local_message_upgrade($oldversion) {
         $table->add_field('profile', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
         $table->add_field('firstname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->add_field('lastname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('desrciption', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('desrciption', XMLDB_TYPE_TEXT, null, null, null, null, null);
 
         // Adding keys to table local_message_crud.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
@@ -91,6 +91,30 @@ function xmldb_local_message_upgrade($oldversion) {
 
         // Message savepoint reached.
         upgrade_plugin_savepoint(true, 2022041905, 'local', 'message');
+    }
+    if ($oldversion < 2022041912) {
+
+        // Changing type of field description on table local_message_crud to text.
+        $table = new xmldb_table('local_message_crud');
+        $field = new xmldb_field('description', XMLDB_TYPE_TEXT, null, null, null, null, null, 'lastname');
+
+        // Launch change of type for field description.
+        $dbman->change_field_type($table, $field);
+
+        // Message savepoint reached.
+        upgrade_plugin_savepoint(true, 2022041912, 'local', 'message');
+    }
+    if ($oldversion < 2022041913) {
+
+        // Changing nullability of field description on table local_message_crud to null.
+        $table = new xmldb_table('local_message_crud');
+        $field = new xmldb_field('description', XMLDB_TYPE_TEXT, null, null, null, null, null, 'lastname');
+
+        // Launch change of nullability for field description.
+        $dbman->change_field_notnull($table, $field);
+
+        // Message savepoint reached.
+        upgrade_plugin_savepoint(true, 2022041913, 'local', 'message');
     }
 
     return true;

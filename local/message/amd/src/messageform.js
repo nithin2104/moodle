@@ -35,6 +35,7 @@ const Selectors = {
         updatemodal: '[data-action="updatemodal"]',
         viewmodal: '[data-action="viewmodal"]',
         deletemodal: '[data-action="deletemodal"]',
+        uploadrecords: '[data-action="uploadrecords"]',
     },
 };
 
@@ -94,6 +95,8 @@ export const init = () => {
         };
         let deletemodal = e.target.closest(Selectors.actions.deletemodal);
         if (deletemodal) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
             const id = deletemodal.getAttribute('data-id');
             const firstname = deletemodal.getAttribute('data-name');
             const a = {
@@ -129,12 +132,21 @@ export const init = () => {
                                 });
                         }
                     );
-                    modal.getRoot().on(ModalEvents.cancel, function() {
-                        window.location.reload(this);
-                    });
                     modal.show();
                 }
             );
+        }
+        let uploadrecords = e.target.closest(Selectors.actions.uploadrecords);
+        if (uploadrecords) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            const modal = new ModalForm({
+                formClass: "local_message\\form\\uploadrecords_form",
+                modalConfig: {title: getString('uploadafile')},
+                returnFocus: uploadrecords,
+            });
+            modal.addEventListener(modal.events.FORM_SUBMITTED, () => window.location.reload());
+            modal.show();
         }
     });
 

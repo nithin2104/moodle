@@ -67,7 +67,7 @@ if (!empty($form1data)) {
 }
 $context = context_system::instance();
 $mform2 = new tool_uploadcourse_step2_form(null, array('contextid' => $context->id, 'columns' => $cir->get_columns(),
-    'data' => $data));
+'data' => $data));
 
 // If a file has been uploaded, then process it.
 if ($form2data = $mform2->is_cancelled()) {

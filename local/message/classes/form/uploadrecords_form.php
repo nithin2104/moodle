@@ -37,50 +37,35 @@ use local_message\manager as manager;
 /**
  * Custom goal class.
  */
-class message_form extends dynamic_form {
+class uploadrecords_form extends dynamic_form
+{
 
     /**
      * Form defination
      */
-    public function definition() {
+    public function definition()
+    {
         global $CFG, $DB, $USER;
-
-        $context = context_system::instance();
 
         $mform = $this->_form; // Don't forget the underscore!
         $id = $this->optional_param('id', 0, PARAM_INT);
         $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);
-        $editoroptions = $this->_customdata['editoroptions'];
 
-        $mform->addElement('filemanager', 'profile', "Profile", null,
-                   ['subdirs' => 0, 'maxbytes' => $maxbytes, 'areamaxbytes' => 10485760, 'maxfiles' => 1,
-                   'accepted_types' => ['jpg', 'jpeg', 'png'], ]);
-
-        $mform->addElement('text', 'firstname', "First Name ");
-        $mform->addRule('firstname', "Required", 'required', null);
-        $mform->setType('text', PARAM_TEXT);
-
-        $mform->addElement('text', 'lastname', "Last Name");
-        $mform->addRule('lastname', "Required", 'required', null);
-        $mform->setType('text', PARAM_TEXT);
-
-        $textfieldoptions = [
-            'trusttext' => true,
-            'subdirs' => true,
-            'maxfiles' => $maxfiles,
-            'maxbytes' => $maxbytes,
-            'context' => $context,
-        ];
         $mform->addElement(
-            'editor',
-            'description_editor',
-            'Description',
+            'filemanager',
+            'uploadrecords',
+            'uploadrecords',
             null,
-            $textfieldoptions
-        )->setValue( ['text' => 'Default text!']);
-        $mform->setType('description_editor', PARAM_TEXT);
-
+            [
+                'subdirs' => 0,
+                'maxbytes' => $maxbytes,
+                'areamaxbytes' => 10485760,
+                'maxfiles' => 50,
+                'accepted_types' => ['csv'],
+            ]
+        );
+        $mform->setType('uploadrecords', PARAM_FILE);
 
         $mform->addElement('hidden', 'status');
         $mform->setType('int', PARAM_INT);
@@ -94,7 +79,8 @@ class message_form extends dynamic_form {
      * @param array $files
      * @return array
      */
-    public function validation($data, $files) {
+    public function validation($data, $files)
+    {
         global $DB;
         $errors = parent::validation($data, $files);
 
@@ -105,61 +91,69 @@ class message_form extends dynamic_form {
      *
      * @return context
      */
-    protected function get_context_for_dynamic_submission(): context {
+    protected function get_context_for_dynamic_submission(): context
+    {
         return context_system::instance();
     }
 
     /**
      * Checks if current user has access to this form, otherwise throws exception
      */
-    protected function check_access_for_dynamic_submission(): void {
+    protected function check_access_for_dynamic_submission(): void
+    {
         require_capability('local/greetings:viewmessages', $this->get_context_for_dynamic_submission());
     }
 
     /**
      * Process dynamic submission
      */
-    public function process_dynamic_submission() {
+    public function process_dynamic_submission()
+    {
         global $CFG, $DB, $USER;
-
+        require_once($CFG->libdir . '/adminlib.php');
+        require_once($CFG->libdir . '/csvlib.class.php');
         $data = $this->get_data();
-
         if ($data) {
-            (new manager)->create_update($data);
+            $importid = \csv_import_reader::get_new_iid('message');
+            $cir = new \csv_import_reader($importid, 'message');
+            $content = $this->get_file_content('uploadrecords');
+            $tempfile = tempnam(make_temp_directory('/csvimport'), 'tmp');
+            if (!$fp = fopen($tempfile, 'w+b')) {
+                $cir->_error = get_string('cannotsavedata', 'error');
+                @unlink($tempfile);
+                return false;
+            }
+            fwrite($fp, $content);
+            fseek($fp, 0);
+            $count = 1;
+            $dataobj = [];
+            while (($fgetdata = fgetcsv($fp, 1000, ",")) != false) {
+                if ($count == 1) {
+                    $columns = $fgetdata;
+                    $count = 2;
+                } else {
+
+                    $data = new \stdClass();
+                    $data->firstname = $fgetdata[0];
+                    $data->lastname = $fgetdata[1];
+                    $data->userid = $USER->id;
+                    $data->timecreated = time();
+                    $data->timeupdated = time();
+                    $dataobj[] = $data;
+                }
+            }
+            // $data = (new manager)->get_message_records(16);
+            // print_object(empty($data->description));die;
+
+            (new manager)->upload_bulk_user_records($dataobj);
         }
     }
 
     /**
      * Set form data for dynamic submission.
      */
-    public function set_data_for_dynamic_submission(): void {
-        global $DB, $CFG;
-        $context = context_system::instance();
-        $id = $this->optional_param('id', 0, PARAM_INT);
-        $data = (new manager)->get_message_records($id);
-        if (!empty($data) && !empty($data->description)) {
-                $textfieldoptions = ['trusttext' => true, 'subdirs' => true, 'maxfiles' => -1, 'maxbytes' => $CFG->maxbytes,
-                'context' => $context, ];
-                $data = file_prepare_standard_editor(
-                    // The existing data.
-                    $data,
-
-                    // The field name in the database.
-                    'description',
-
-                    // The options.
-                    $textfieldoptions,
-
-                    // The combination of contextid, component, filearea, and itemid.
-                    context_system::instance(),
-                    'local_message',
-                    'description',
-                    $data->id
-                );
-
-            $this->set_data($data);
-        }
-        $this->set_data($data);
+    public function set_data_for_dynamic_submission(): void
+    {
 
     }
 
@@ -168,7 +162,8 @@ class message_form extends dynamic_form {
      *
      * @return moodle_url
      */
-    protected function get_page_url_for_dynamic_submission(): moodle_url {
+    protected function get_page_url_for_dynamic_submission(): moodle_url
+    {
 
         return new moodle_url(
             '/local/message/manage.php',

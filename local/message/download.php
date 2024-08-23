@@ -15,15 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Folder module version information
+ * TODO describe file download
  *
- * @package   local_message
- * @copyright 2009 Petr Skoda  {@link http://skodak.org}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    local_message
+ * @copyright  2024 LMSCloud.io
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+use local_message\manager as manager;
+require_once(__DIR__ ."/../../config.php");
 
-defined('MOODLE_INTERNAL') || die();
+require_login();
+$records = (new manager)->get_details();
+// print_object($records);die;
 
-$plugin->version   = 2022041913;    // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041200;    // Requires this Moodle version.
-$plugin->component = 'local_message';   // Full name of the plugin (used for diagnostics).
+$dataformat = optional_param('dataformat', 'csv', PARAM_ALPHA);
+$columns = ['Id', 'Full Name', 'User Id', 'Time Created', 'Time Modified', 'Description', 'Profile Link'];
+$exportdata = new ArrayObject($records);
+
+$iterator = $exportdata->getIterator();
+// print_object($iterator);die;
+\core\dataformat::download_data('user_records', $dataformat, $columns, $iterator);

@@ -21,13 +21,13 @@
  * @copyright 2009 Petr Skoda  {@link http://skodak.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+namespace local_message\form;
 defined('MOODLE_INTERNAL') || die;
 require_once("$CFG->libdir/formslib.php");
 /**
  * Summary of edit
  */
-class edit extends moodleform {
+class edit extends \moodleform {
     // Add elements to form.
     /**
      * Summary of definition

@@ -113,6 +113,16 @@ class manager {
         $DB->update_record('local_message_crud', $data);
 
     }
+
+    /**
+     * Summary of upload_bulk_user_records
+     * @param stdClass[] $data
+     * @return void
+     */
+    public function upload_bulk_user_records($data) {
+        global $DB;
+        $DB->insert_records('local_message_crud', $data);
+    }
     /**
      * Summary of get_records
      * @param int $id
@@ -137,9 +147,13 @@ class manager {
             $viewrec->id = $rec->id;
             $profileid = $rec->profile;
             $viewrec->fullname = $rec->firstname.' '.$rec->lastname;
+            $viewrec->userid = $rec->userid;
+            $viewrec->timecreated = $rec->timecreated;
+            $viewrec->timeupdated = $rec->timeupdated;
             $viewrec->description = $rec->description;
             $fs = get_file_storage();
             $files = $fs->get_area_files($context->id, 'local_message', 'profile', $profileid);
+            // print_object($files);die;
             if ($files) {
                 foreach ($files as $file) {
                     $fileurl = moodle_url::make_pluginfile_url( $file->get_contextid(),

@@ -33,9 +33,9 @@ $PAGE->set_url("/local/message/manage.php");
 $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->requires->js_call_amd('local_message/messageform', 'init');
+
 $PAGE->set_title(get_string('managetitle', 'local_message'));
 $PAGE->set_heading(get_string('headingmanage', 'local_message'));
-
 require_login();
 
 if (isguestuser()) {
@@ -47,7 +47,6 @@ if (has_capability('local/message:manage', $context)) {
 } else {
     $manage = false;
 }
-
 $result = (new manager)->get_details();
 
 $templatecontext = [
@@ -59,7 +58,6 @@ $templatecontext = [
     "viewmsgurl" => new moodle_url("/local/message/viewmsg.php"),
 ];
 echo $OUTPUT->header();
-
 
 echo $OUTPUT->render_from_template("local_message/manage", $templatecontext);
 
