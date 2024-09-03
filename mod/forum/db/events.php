@@ -33,7 +33,7 @@ $observers = array(
 
     array(
         'eventname' => '\core\event\role_assigned',
-        'callback' => 'mod_forum_observer::role_assigned'
+        'callback' => 'mod_forum_observer::role_assigned',
     ),
 
     array(

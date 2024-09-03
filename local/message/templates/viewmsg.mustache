@@ -24,31 +24,58 @@
     }
 }}
 
+<div class="no-overflow">
+  <div class="table-responsive">
+    <table class="generaltable table-sm" id="viewmsgtable">
+      <thead class="table-dark">
+        <tr>
+          <th class="text-center">{{#str}}idnumber{{/str}}</th>
+          <th class="text-center">
+            {{#str}}messagetext, local_message{{/str}}
+          </th>
+          <th class="text-center">
+            {{#str}}messagetype, local_message{{/str}}
+          </th>
+          <th class="text-center">{{#str}}actions, local_message{{/str}}</th>
+        </tr>
+      </thead>
+      <tbody class="table-white text-center">
+        {{#messages}}
+        <tr>
+          <td>{{ id }}</td>
+          <td>{{ messagetext }}</td>
+          <td>{{ messagetype }}</td>
+          <td class="d-flex justify-content-around">
+            {{#manage}}
+            <a href="/moodle/local/message/update.php?id={{ id }}" class="mx-2"
+              ><i
+                class="fa fa-pencil fa-fw"
+                title="{{ updatename }}"
+                aria-hidden="true"
+              ></i
+            ></a>
+
+            <a
+              type="button"
+              class="mx-2 text-danger"
+              data-modal="confirmation"
+              data-modal-title-str='["delete", "core"]'
+              data-modal-content-str='["areyousure"]'
+              data-modal-yes-button-str='["delete", "core"]'
+              data-modal-destination="/moodle/local/message/delete.php?id={{
+                id
+              }}"
+            >
+              {{#pix}} t/delete, core, {{ deletename }} {{/pix}}
+            </a>
+            {{/manage}}
+          </td>
+        </tr>
+        {{/messages}}
+      </tbody>
+    </table>
+  </div>
+</div>
 
 
-<div class="d-flex flex-wrap">
-{{#messages}}
-<div class="d-flex flex-row justify-content-between border border-dark border-5 rounded p-2 w-25 m-1">
-
-<div class="d-flex">
-<p class="m-0">{{messagetext}}</p>
-</div>
-{{#manage}}
-<div class="d-flex flex-row">
-<a href="/moodle/local/message/update.php?id={{id}}" class="mx-2"><i class="fa fa-pencil fa-fw" title="{{updatename}}" aria-hidden="true"></i></a>
-<a type="button"
-    class="mx-2 text-danger"
-    data-modal="confirmation"
-    data-modal-title-str='["delete", "core"]'
-    data-modal-content-str='["areyousure"]'
-    data-modal-yes-button-str='["delete", "core"]'
-    data-modal-destination="/moodle/local/message/delete.php?id={{id}}">
-   {{#pix}} t/delete, core, {{deletename}} {{/pix}}
-</a>
-</div>
-{{/manage}}
-
-</div>
-{{/messages}}
-</div>
-<a href={{manageurl}} class="btn btn-primary">{{actionpage}}</a>
+<a href="{{ manageurl }}" class="btn btn-primary">{{ actionpage }}</a>

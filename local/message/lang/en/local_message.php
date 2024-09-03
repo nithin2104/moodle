@@ -57,6 +57,8 @@ $string['pluginname'] = 'Messages plugin';
  $string['actions'] = 'Actions';
  $string['areyousure'] = 'Are you sure? {$a}.';
  $string['emptyid'] = 'Id is not passed along with delete record.';
+ $string['eventmessagecreated'] = 'Message Created';
+
 
 
 

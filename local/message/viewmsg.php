@@ -32,7 +32,9 @@ $PAGE->set_url("/local/message/viewmsg.php");
 
 $PAGE->set_title(get_string('viewtitle', 'local_message'));
 $PAGE->set_heading(get_string('viewtitle', 'local_message'));
-
+$PAGE->requires->jquery();
+$PAGE->requires->js_call_amd('local_message/my_datatables', 'init');
+$PAGE->requires->css('/local/message/styles/style.css');
 require_login();
 if (isguestuser()) {
     throw new moodle_exception('Guest users not allowed');

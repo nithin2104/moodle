@@ -30,7 +30,8 @@ require_login();
 global $DB, $USER;
 
 $PAGE->set_url("/local/message/edit.php");
-$PAGE->set_context(context_system::instance());
+$context = context_system::instance();
+$PAGE->set_context($context);
 $PAGE->set_title(get_string('edittitle', 'local_message'));
 $PAGE->set_heading(get_string('headingedit', 'local_message'));
 
@@ -42,7 +43,20 @@ if ($mform->is_cancelled()) {
     $recordtoinsert = new stdClass();
     $recordtoinsert->messagetext = $fromform->messagetext;
     $recordtoinsert->messagetype = $fromform->messagetype;
-    $DB->insert_record('local_message', $recordtoinsert);
+    $fromform->id = $DB->insert_record('local_message', $recordtoinsert);
+    // Trigger message created event.
+    $params = [
+        'objectid' => $fromform->id,
+        'context' => $context,
+        'userid' => $USER->id,
+        'other' => [
+            'username' => $USER->username,
+        ],
+    ];
+    $event = \local_message\event\message_created::create($params);
+    $event->add_record_snapshot('local_message', $fromform);
+    $event->trigger();
+    // Sending email to admin about message creation.
     $userfrom = core_user::get_noreply_user();
     $messagebody = "Message : $fromform->messagetext \n Message type : $fromform->messagetype \n \n Best Regards, \n Moodle.";
     // email_to_user($USER, $userfrom, 'Message App', $messagebody);
