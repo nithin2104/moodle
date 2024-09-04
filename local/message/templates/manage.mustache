@@ -81,6 +81,8 @@
         {{#manage}}
         <a role="button" aria-hidden="true" class="text-primary" data-action="updatemodal" data-id={{id}} data-name={{fullname}}
         title="{{#str}}updatename, local_message{{/str}}"><i class="fa fa-pencil fa-fw"></i></a>
+        <a role="button" class="text-success" href="{{profile}}" download="{{profile}}" title="{{#str}}download{{/str}}"><i class="fa fa-download">
+        </i></a>
         <a role="button" aria-hidden="true" class="text-danger" data-action="deletemodal" data-id={{id}} data-name={{fullname}}
         title="{{#str}}deletename,local_message{{/str}}">{{#pix}}t/delete, core{{/pix}}</a>
         {{/manage}}

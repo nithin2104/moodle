@@ -26,12 +26,10 @@ require_once(__DIR__ ."/../../config.php");
 
 require_login();
 $records = (new manager)->get_details();
-// print_object($records);die;
 
 $dataformat = optional_param('dataformat', 'csv', PARAM_ALPHA);
 $columns = ['Id', 'Full Name', 'User Id', 'Time Created', 'Time Modified', 'Description', 'Profile Link'];
 $exportdata = new ArrayObject($records);
 
 $iterator = $exportdata->getIterator();
-// print_object($iterator);die;
 \core\dataformat::download_data('user_records', $dataformat, $columns, $iterator);

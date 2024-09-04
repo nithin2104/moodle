@@ -1,3 +1,4 @@
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,19 +15,35 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * TODO describe module my_datatables
+ * Capability definitions for wiki snippet
  *
- * @module     local_notes/my_datatables
+ * Documentation: {@link https://moodledev.io/docs/apis/subsystems/access}
+ *
+ * @package    mod_wikisnippet
+ * @category   access
  * @copyright  2024 LMSCloud.io
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-import $ from "jquery";
-import "local_notes/datatables";
 
-export const init = () => {
-    $(function() {
-        $('#viewnotestable').DataTable({
-            'bLengthChange': false,
-        });
-    });
-};
+defined('MOODLE_INTERNAL') || die();
+
+$capabilities = [
+    'mod/wikisnippet:addinstance' => [
+        'riskbitmask' => RISK_XSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+        ],
+        'clonepermissionsfrom' => 'moodle/course:manageactivities',
+    ],
+    'mod/wikisnippet:view' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
+        'archtypes' => [
+            'user' => CAP_ALLOW,
+        ],
+    ],
+];

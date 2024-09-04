@@ -36,7 +36,7 @@ class main implements renderable, templatable {
      * Summary of cid
      * @var $cid
      */
-    private $cid;
+    public $cid;
 
     /**
      * Summary of __construct
@@ -55,7 +55,7 @@ class main implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $DB;
         $data = new \stdClass();
-        // Ensure we only return the necessary data for the template.
+
         $sql = "SELECT n.id, u.firstname, u.lastname, n.usernotes, n.userid, n.timecreated
                 FROM {local_user_notes} n
                 LEFT JOIN {user} u ON u.id = n.userid

@@ -1,3 +1,4 @@
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,19 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * TODO describe module my_datatables
+ * Version information for mod_wikisnippets
  *
- * @module     local_notes/my_datatables
+ * @package    mod_wikisnippet
  * @copyright  2024 LMSCloud.io
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-import $ from "jquery";
-import "local_notes/datatables";
 
-export const init = () => {
-    $(function() {
-        $('#viewnotestable').DataTable({
-            'bLengthChange': false,
-        });
-    });
-};
+defined('MOODLE_INTERNAL') || die();
+
+$plugin->component    = 'mod_wikisnippet';
+$plugin->version      = 2024090301;
+$plugin->requires     = 2022041900;
+$plugin->maturity     = MATURITY_STABLE;

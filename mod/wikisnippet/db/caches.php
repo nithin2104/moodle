@@ -1,3 +1,4 @@
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,19 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * TODO describe module my_datatables
+ * Cache definitions for wiki snippet
  *
- * @module     local_notes/my_datatables
+ * Documentation: {@link https://docs.moodle.org/dev/Cache_API}
+ *
+ * @package    mod_wikisnippet
+ * @category   cache
  * @copyright  2024 LMSCloud.io
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-import $ from "jquery";
-import "local_notes/datatables";
 
-export const init = () => {
-    $(function() {
-        $('#viewnotestable').DataTable({
-            'bLengthChange': false,
-        });
-    });
-};
+defined('MOODLE_INTERNAL') || die();
+
+$definitions = [
+    'wikidata' => [
+        'mode' => cache_store::MODE_APPLICATION,
+        'simplekeys' => true,
+    ],
+];

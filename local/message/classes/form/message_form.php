@@ -54,7 +54,7 @@ class message_form extends dynamic_form {
         $editoroptions = $this->_customdata['editoroptions'];
 
         $mform->addElement('filemanager', 'profile', "Profile", null,
-                   ['subdirs' => 0, 'maxbytes' => $maxbytes, 'areamaxbytes' => 10485760, 'maxfiles' => 1,
+                   ['subdirs' => 0, 'maxbytes' => $CFG->maxbytes, 'areamaxbytes' => 10485760, 'maxfiles' => 1,
                    'accepted_types' => ['jpg', 'jpeg', 'png'], ]);
 
         $mform->addElement('text', 'firstname', "First Name ");
@@ -68,8 +68,8 @@ class message_form extends dynamic_form {
         $textfieldoptions = [
             'trusttext' => true,
             'subdirs' => true,
-            'maxfiles' => $maxfiles,
-            'maxbytes' => $maxbytes,
+            'maxfiles' => $CFG->maxfiles,
+            'maxbytes' => 10485760,
             'context' => $context,
         ];
         $mform->addElement(
@@ -138,14 +138,14 @@ class message_form extends dynamic_form {
         $id = $this->optional_param('id', 0, PARAM_INT);
         $data = (new manager)->get_message_records($id);
         if (!empty($data) && !empty($data->description)) {
-                $textfieldoptions = ['trusttext' => true, 'subdirs' => true, 'maxfiles' => -1, 'maxbytes' => $CFG->maxbytes,
-                'context' => $context, ];
-                $data = file_prepare_standard_editor(
-                    // The existing data.
-                    $data,
+            $textfieldoptions = ['trusttext' => true, 'subdirs' => true, 'maxfiles' => -1, 'maxbytes' => $CFG->maxbytes,
+            'context' => $context, ];
+            $data = file_prepare_standard_editor(
+                // The existing data.
+                $data,
 
-                    // The field name in the database.
-                    'description',
+                // The field name in the database.
+                'description',
 
                     // The options.
                     $textfieldoptions,
@@ -157,7 +157,15 @@ class message_form extends dynamic_form {
                     $data->id
                 );
 
-            $this->set_data($data);
+        }
+
+        if ($data->profile) {
+
+            $draftitemid = file_get_submitted_draft_itemid('profile');
+
+            file_prepare_draft_area($draftitemid, $context->id, 'local_message', 'profile', $data->profile,
+                                            ['subdirs' => '', 'maxfiles' => 6], null);
+            $data->profile = $draftitemid;
         }
         $this->set_data($data);
 

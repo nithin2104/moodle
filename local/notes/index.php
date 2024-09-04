@@ -38,7 +38,7 @@ if ($data = $mform->get_data()) {
     $textfileoptions = [
         'trusttext' => true,
         'subdirs' => true,
-        'maxfiles' => -1,
+        'maxfiles' => 10,
         'maxbytes' => $CFG->maxbytes,
         'context' => $context,
 

@@ -126,7 +126,7 @@ class manager {
     /**
      * Summary of get_records
      * @param int $id
-     * @return array
+     * @return \stdClass
      */
     public function get_message_records($id) {
         global $DB;
@@ -165,7 +165,7 @@ class manager {
                     $profileurl = $fileurl->get_port() ? $fileurl->get_scheme() . '://' . $fileurl->get_host() .
                     $fileurl->get_path() . ':' . $fileurl->get_port() : $fileurl->get_scheme() . '://' . $fileurl->get_host() .
                     $fileurl->get_path();
-                    $viewrec->profile = $profileurl;
+                    $viewrec->profile = $fileurl;
                 }
             }
             $resultset[] = $viewrec;
