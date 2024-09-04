@@ -23,6 +23,7 @@
  */
 
 require('../../config.php');
+require_once(__DIR__ .'/classes/output/renderer.php');
 require_login();
 $cid = required_param('contextid', PARAM_INT);
 $url = new moodle_url('/local/notes/viewnotes.php', ['contextid' => $cid]);
@@ -38,11 +39,10 @@ $PAGE->set_heading(get_string('pluginname', 'local_notes'));
 $output = $PAGE->get_renderer('local_notes');
 
 // Create an instance of the renderer.
-
-echo $output->header();
-echo $output->heading(get_string('pluginname', 'local_notes'));
-
 $renderable = new \local_notes\output\main($cid);
+
+echo $OUTPUT->header();
+
 // Render the template with the data.
 echo $output->render($renderable);
 

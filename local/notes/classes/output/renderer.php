@@ -28,6 +28,7 @@ use plugin_renderer_base;
  */
 class renderer extends plugin_renderer_base {
 
+
     /**
      * Summary of render_notes
      * @param \local_notes\output\main $notes
