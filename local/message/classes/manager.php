@@ -78,14 +78,14 @@ class manager {
         $textfileoptions = [
             'trusttext' => true,
             'subdirs' => true,
-            'maxfiles' => -1,
+            'maxfiles' => 10,
             'maxbytes' => $CFG->maxbytes,
             'context' => $context,
 
         ];
         $item = $data->profile;
         file_save_draft_area_files($item, $context->id, 'local_message', 'profile', $item,
-        ['subdirs' => '', 'maxfiles' => 6], null, true);
+        ['subdirs' => '', 'maxfiles' => 10], null, true);
 
         if ($data->id > 0) {
             $data->timeupdated = $this->timeupdated;
@@ -123,6 +123,18 @@ class manager {
         global $DB;
         $DB->insert_records('local_message_crud', $data);
     }
+
+    /**
+     * Summary of upload_update_user_records
+     * @param mixed $params
+     * @return void
+     */
+    public function upload_update_user_records($params) {
+        global $DB;
+        $sql = "UPDATE {local_message_crud} SET firstname = :firstname, lastname = :lastname, timeupdated = :timeupdated
+                            WHERE userid = :userid";
+        $DB->execute($sql, $params);
+    }
     /**
      * Summary of get_records
      * @param int $id
@@ -131,14 +143,14 @@ class manager {
     public function get_message_records($id) {
         global $DB;
 
-        return $DB->get_record('local_message_crud', ['id' => $id], '*');
+        return $DB->get_record('local_message_crud', ['id' => $id]);
     }
     /**
      * Summary of get_details
      * @return array
      */
     public function get_details() {
-        global $DB;
+        global $DB, $USER;
         $context = context_system::instance();
         $result = $DB->get_records('local_message_crud');
         $resultset = [];
@@ -148,6 +160,11 @@ class manager {
             $profileid = $rec->profile;
             $viewrec->fullname = $rec->firstname.' '.$rec->lastname;
             $viewrec->userid = $rec->userid;
+            if ($rec->userid == $USER->id && (has_capability('local/message:manage', $context) ||
+                                                has_capability('local/message:own', $context))) {
+                $viewrec->manage = true;
+
+            }
             $viewrec->timecreated = $rec->timecreated;
             $viewrec->timeupdated = $rec->timeupdated;
             $viewrec->description = $rec->description;
@@ -162,9 +179,6 @@ class manager {
                                                                 $file->get_itemid(),
                                                                 $file->get_filepath(),
                                                                 $file->get_filename());
-                    $profileurl = $fileurl->get_port() ? $fileurl->get_scheme() . '://' . $fileurl->get_host() .
-                    $fileurl->get_path() . ':' . $fileurl->get_port() : $fileurl->get_scheme() . '://' . $fileurl->get_host() .
-                    $fileurl->get_path();
                     $viewrec->profile = $fileurl;
                 }
             }
@@ -191,12 +205,7 @@ class manager {
      */
     public function delete_record_id($id) {
         global $DB;
-
-        try {
-            $DB->delete_records('local_message_crud', ['id' => $id]);
-        } catch (dml_exception $e) {
-            print($e);
-        }
+        $DB->delete_records('local_message_crud', ['id' => $id]);
         return true;
     }
 

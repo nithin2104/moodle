@@ -55,6 +55,8 @@ if ($mform->is_cancelled()) {
         fwrite($fp, $content);
         fseek($fp, 0);
         $count = 1;
+        $updatecount = 0;
+        $insertcount = 0;
         $dataobj = [];
         while (($fgetdata = fgetcsv($fp, 1000, ",")) != false) {
             if ($count == 1) {
@@ -64,17 +66,29 @@ if ($mform->is_cancelled()) {
                 $data = new stdClass();
                 $data->firstname = $fgetdata[0];
                 $data->lastname = $fgetdata[1];
-                $data->userid = $USER->id;
+                $data->userid = $fgetdata[2];
                 $data->timecreated = time();
                 $data->timeupdated = time();
-                $dataobj[] = $data;
+                $idfound = $DB->get_records_select('local_message_crud', 'userid = :uid', ['uid' => $data->userid], '', 'id');
+                if ($idfound) {
+                    $params = [
+                        'firstname' => $data->firstname,
+                        'lastname' => $data->lastname,
+                        'timeupdated' => $data->timeupdated,
+                        'userid' => $data->userid,
+                    ];
+                    $updatecount += 1;
+                    (new manager)->upload_update_user_records($params);
+                } else {
+                    $insertcount += 1;
+                    $dataobj[] = $data;
+                }
             }
         }
-        // $data = (new manager)->get_message_records(16);
-        // print_object($dataobj);die;
         (new manager)->upload_bulk_user_records($dataobj);
+        fclose($fp);
     }
-    redirect(new moodle_url('/local/message/manage.php'));
+    redirect(new moodle_url('/local/message/manage.php'), "{$updatecount} Records updated and {$insertcount} Records inserted.");
 
 } else {
     $mform->set_data($data);

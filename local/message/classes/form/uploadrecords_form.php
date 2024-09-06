@@ -37,14 +37,12 @@ use local_message\manager as manager;
 /**
  * Custom goal class.
  */
-class uploadrecords_form extends dynamic_form
-{
+class uploadrecords_form extends dynamic_form {
 
     /**
      * Form defination
      */
-    public function definition()
-    {
+    public function definition() {
         global $CFG, $DB, $USER;
 
         $mform = $this->_form; // Don't forget the underscore!
@@ -53,13 +51,13 @@ class uploadrecords_form extends dynamic_form
         $mform->setType('id', PARAM_INT);
 
         $mform->addElement(
-            'filemanager',
+            'filepicker',
             'uploadrecords',
             'uploadrecords',
             null,
             [
                 'subdirs' => 0,
-                'maxbytes' => $maxbytes,
+                'maxbytes' => 10485760,
                 'areamaxbytes' => 10485760,
                 'maxfiles' => 50,
                 'accepted_types' => ['csv'],
@@ -79,8 +77,7 @@ class uploadrecords_form extends dynamic_form
      * @param array $files
      * @return array
      */
-    public function validation($data, $files)
-    {
+    public function validation($data, $files) {
         global $DB;
         $errors = parent::validation($data, $files);
 
@@ -91,24 +88,20 @@ class uploadrecords_form extends dynamic_form
      *
      * @return context
      */
-    protected function get_context_for_dynamic_submission(): context
-    {
+    protected function get_context_for_dynamic_submission(): context {
         return context_system::instance();
     }
 
     /**
      * Checks if current user has access to this form, otherwise throws exception
      */
-    protected function check_access_for_dynamic_submission(): void
-    {
-        require_capability('local/greetings:viewmessages', $this->get_context_for_dynamic_submission());
+    protected function check_access_for_dynamic_submission(): void {
     }
 
     /**
      * Process dynamic submission
      */
-    public function process_dynamic_submission()
-    {
+    public function process_dynamic_submission() {
         global $CFG, $DB, $USER;
         require_once($CFG->libdir . '/adminlib.php');
         require_once($CFG->libdir . '/csvlib.class.php');
@@ -136,24 +129,32 @@ class uploadrecords_form extends dynamic_form
                     $data = new \stdClass();
                     $data->firstname = $fgetdata[0];
                     $data->lastname = $fgetdata[1];
-                    $data->userid = $USER->id;
+                    $data->userid = $fgetdata[2];
                     $data->timecreated = time();
                     $data->timeupdated = time();
-                    $dataobj[] = $data;
+                    $idfound = $DB->get_records_select('local_message_crud', 'userid = :uid', ['uid' => $data->userid], '', 'id');
+                    if ($idfound) {
+                        $params = [
+                            'firstname' => $data->firstname,
+                            'lastname' => $data->lastname,
+                            'timeupdated' => $data->timeupdated,
+                            'userid' => $data->userid,
+                        ];
+                        (new manager)->upload_update_user_records($params);
+                    } else {
+                        $dataobj[] = $data;
+                    }
                 }
             }
-            // $data = (new manager)->get_message_records(16);
-            // print_object(empty($data->description));die;
-
             (new manager)->upload_bulk_user_records($dataobj);
+            fclose($fp);
         }
     }
 
     /**
      * Set form data for dynamic submission.
      */
-    public function set_data_for_dynamic_submission(): void
-    {
+    public function set_data_for_dynamic_submission(): void {
 
     }
 
@@ -162,8 +163,7 @@ class uploadrecords_form extends dynamic_form
      *
      * @return moodle_url
      */
-    protected function get_page_url_for_dynamic_submission(): moodle_url
-    {
+    protected function get_page_url_for_dynamic_submission(): moodle_url {
 
         return new moodle_url(
             '/local/message/manage.php',

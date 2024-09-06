@@ -23,27 +23,36 @@
  */
 
 require('../../config.php');
-require_once(__DIR__ .'/classes/output/renderer.php');
-require_login();
-$cid = required_param('contextid', PARAM_INT);
-$url = new moodle_url('/local/notes/viewnotes.php', ['contextid' => $cid]);
-$context = context_system::instance();
+global $DB, $PAGE, $CFG;
+$contextid = optional_param('contextid', '', PARAM_INT);
+$context = context::instance_by_id($contextid);
+if ($context->contextlevel == 50) {
+    $course = $DB->get_record('course', ['id' => $context->instanceid]);
+    require_login($course);
+    $PAGE->set_heading($course->fullname. " : " .get_string('usernotes', 'local_notes'));
+} else {
+    $course = $DB->get_record('course_modules', ['id' => $context->instanceid]);
+    $ccourse = $DB->get_record('course', ['id' => $course->course]);
+    require_login($ccourse, false, $course);
+    $PAGE->activityheader->disable();
+}
+$url = new moodle_url('/local/notes/viewnotes.php', ['contextid' => $contextid]);
 $PAGE->set_url($url);
-$PAGE->set_context($context);
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('incourse');
+$PAGE->add_body_class('limitedwidth');
 $PAGE->requires->js_call_amd('local_notes/my_datatables', 'init');
-$PAGE->requires->css('/local/notes/styles/style.css');
-$PAGE->set_heading(get_string('pluginname', 'local_notes'));
-
+$PAGE->requires->css('/local/message/styles/style.css');
 
 $output = $PAGE->get_renderer('local_notes');
 
-// Create an instance of the renderer.
-$renderable = new \local_notes\output\main($cid);
-
+$renderable = new \local_notes\output\main($contextid);
 echo $OUTPUT->header();
 
-// Render the template with the data.
 echo $output->render($renderable);
+
+echo html_writer::link(
+    new moodle_url('/local/notes/index.php', ['contextid' => $contextid]),
+    get_string('postnotes', 'local_notes'), ['role' => 'button']
+);
 
 echo $output->footer();

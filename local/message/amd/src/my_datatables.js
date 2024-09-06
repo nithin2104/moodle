@@ -24,9 +24,10 @@ import $ from "jquery";
 import "local_message/datatables";
 
 export const init = () => {
-    $(document).ready(function() {
+    $(function() {
         $('#viewmsgtable').DataTable({
             'bLengthChange': false,
+            'ordering': false,
         });
     });
 };

@@ -61,10 +61,8 @@ class main implements renderable, templatable {
                 LEFT JOIN {user} u ON u.id = n.userid
                 WHERE n.linkcontextid = $this->cid
                 ORDER BY timecreated DESC";
-
         $result = $DB->get_records_sql($sql);
         $data->notes = array_values($result);
-        $data->postnotes = new \moodle_url('/local/notes/index.php', ['contextid' => $this->cid]);
         return $data;
     }
 }

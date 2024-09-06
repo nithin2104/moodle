@@ -45,6 +45,7 @@ $string['pluginname'] = 'Messages plugin';
  $string['updatename'] = 'Update';
  $string['deletename'] = 'Delete';
  $string['message:manage'] = 'manage crud';
+ $string['message:own'] = 'own manage crud';
  $string['message:allusers'] = 'manage crud';
  $string['moodleformtext'] = 'Moodle Form Crud operations Buttons';
  $string['dynamicformtext'] = 'Dynamic (MODAL) M_Form Crud operations Buttons';

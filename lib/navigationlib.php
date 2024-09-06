@@ -4853,6 +4853,11 @@ class settings_navigation extends navigation_node {
         foreach ($reports as $reportfunction) {
             $reportfunction($modulenode, $this->page->cm);
         }
+        //Add notes plugin to module
+        $localplugins = get_plugin_list_with_function('local', 'extend_navigation_module', 'lib.php');
+        foreach ($localplugins as $localplugin) {
+            $localplugin($modulenode, $this->page->cm);
+        }
         // Add a backup link
         $featuresfunc = $this->page->activityname.'_supports';
         if (function_exists($featuresfunc) && $featuresfunc(FEATURE_BACKUP_MOODLE2) && has_capability('moodle/backup:backupactivity', $this->page->cm->context)) {

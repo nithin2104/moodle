@@ -38,14 +38,17 @@ function local_notes_extend_navigation_frontpage($navigation) {
         );
     }
 }
+
 /**
- * Summary of local_greetings_extend_navigation_course
+ * Summary of local_notes_extend_navigation_course
  * @param mixed $navigation
+ * @param mixed $course
  * @return void
  */
-function local_notes_extend_navigation_course($navigation) {
+function local_notes_extend_navigation_course($navigation, $course) {
     global $PAGE;
     $context = $PAGE->context;
+
     if (isloggedin() && !isguestuser()) {
         $navigation->add(
             get_string('pluginname', 'local_notes'),
@@ -53,5 +56,21 @@ function local_notes_extend_navigation_course($navigation) {
             navigation_node::TYPE_CUSTOM,
         );
     }
+}
+
+
+/**
+ * Summary of local_notes_extend_navigation_module
+ * @param mixed $navigation
+ * @param mixed $cm
+ * @return void
+ */
+function local_notes_extend_navigation_module($navigation, $cm) {
+    global $PAGE;
+    $context = $PAGE->context;
+    $url = new moodle_url('/local/notes/index.php', ['contextid' => $context->id]);
+    $navigation->add(get_string('pluginname', 'local_notes'),
+        $url,
+        navigation_node::TYPE_CUSTOM)->set_show_in_secondary_navigation(true);
 }
 

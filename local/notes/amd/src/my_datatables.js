@@ -27,6 +27,7 @@ export const init = () => {
     $(function() {
         $('#viewnotestable').DataTable({
             'bLengthChange': false,
+            'ordering': false,
         });
     });
 };

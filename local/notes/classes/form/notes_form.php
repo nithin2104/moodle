@@ -36,7 +36,8 @@ class notes_form extends \moodleform {
     protected function definition() {
 
         global $CFG;
-        $context = \context_system::instance();
+        $contextid = optional_param('contextid', '', PARAM_INT);
+        $context = \context::instance_by_id($contextid);
         $mform = $this->_form;
 
         $textfieldoptions = [
@@ -49,7 +50,6 @@ class notes_form extends \moodleform {
         $mform->addElement('editor', 'usernotes_editor', get_string('notes', 'local_notes'), ['rows' => 5], $textfieldoptions);
         $mform->setType('usernotes_editor', PARAM_TEXT);
         $mform->addRule('usernotes_editor', get_string('required'), 'required', null, 'client');
-
         $mform->addElement('submit', 'submit', get_string('submit'));
 
     }

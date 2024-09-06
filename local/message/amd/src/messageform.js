@@ -40,7 +40,6 @@ const Selectors = {
 };
 
 export const init = () => {
-    // In this example we will open the modal dialogue with the form when user clicks on the edit link:
     document.addEventListener('click', e => {
         let updatemodal = e.target.closest(Selectors.actions.updatemodal);
         if (updatemodal) {
@@ -50,16 +49,11 @@ export const init = () => {
                 getString('edittitle', 'local_message', updatemodal.getAttribute('data-name')) :
                 getString('addtitle', 'local_message', updatemodal.getAttribute('data-name'));
             const modalForm = new ModalForm({
-                // Name of the class where form is defined (must extend \core_form\dynamic_form):
                 formClass: "local_message\\form\\message_form",
-                // Add as many arguments as you need, they will be passed to the form:
                 args: {id: updatemodal.getAttribute('data-id')},
-                // Pass any configuration settings to the modal dialogue, for example, the title:
                 modalConfig: {title},
-                // DOM element that should get the focus after the modal dialogue is closed:
                 returnFocus: updatemodal,
             });
-            // Listen to events if you want to execute something on form submit. Event detail will contain everything the process().
             modalForm.addEventListener(modalForm.events.FORM_SUBMITTED, () => window.location.reload());
             modalForm.show();
         }

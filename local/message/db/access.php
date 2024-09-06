@@ -36,4 +36,12 @@ $capabilities = [
             'manager' => CAP_ALLOW,
         ],
     ],
+    'local/message:own' => [
+        'riskbitmask' => RISK_SPAM, RISK_DATALOSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'user' => CAP_ALLOW,
+        ],
+    ],
 ];

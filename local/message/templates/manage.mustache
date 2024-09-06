@@ -24,19 +24,6 @@
     }
 }}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.3/b-3.1.1/b-html5-3.1.1/b-print-3.1.1/r-3.0.2/sc-2.4.3/datatables.min.css" rel="stylesheet">
-<script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.3/b-3.1.1/b-html5-3.1.1/b-print-3.1.1/r-3.0.2/sc-2.4.3/datatables.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#mytable').dataTable({
-                'bLengthChange': false,
-            });
-        })
-    </script>
-
 <div class="d-flex">
 <div class="container p-2 m-3">
 <h5>{{#str}}moodleformtext, local_message{{/str}}</h5>
@@ -57,10 +44,8 @@
 
 <hr class="m-0 border border-top-2 border-secondary my-3"></hr>
 
-<div class="no-overflow">
-<div class="table-responsive">
-<table class="generaltable table-sm" id="mytable">
-<thead class="table-dark">
+<table class="display" id="viewmsgtable">
+<thead class="table-dark text-center">
     <tr>
         <th class="text-center"> {{#str}}profile, local_message{{/str}} </th>
         <th class="text-center"> {{#str}}fullname, local_message{{/str}} </th>
@@ -68,22 +53,22 @@
         <th class="text-center"> {{#str}}actions, local_message{{/str}} </th>
     </tr>
 </thead>
-<tbody class="table-white text-center">
+<tbody class="text-center">
 {{#details}}
 <tr>
 
-    <td> <img src="{{profile}}" height="50" width="50" style="border-radius:50%" alt="User Profile";> </td>
+    <td> <img src="{{profile}}" height="50" width="50" style="border-radius:50%" alt="User Profile"> </td>
     <td>{{fullname}}</td>
     <td>{{description}}</td>
-    <td class="d-flex justify-content-around">
-        <a role="button" aria-hidden="true" class="text-info" data-action="viewmodal" data-id={{id}} title="{{#str}}viewdetails,
+    <td>
+        <a role="button" aria-hidden="true" class="text-info mx-3" data-action="viewmodal" data-id={{id}} title="{{#str}}viewdetails,
         local_message{{/str}}"><i class="fa fa-eye fa-fw"></i></a>
         {{#manage}}
-        <a role="button" aria-hidden="true" class="text-primary" data-action="updatemodal" data-id={{id}} data-name={{fullname}}
+        <a role="button" aria-hidden="true" class="text-primary mx-3" data-action="updatemodal" data-id={{id}} data-name={{fullname}}
         title="{{#str}}updatename, local_message{{/str}}"><i class="fa fa-pencil fa-fw"></i></a>
-        <a role="button" class="text-success" href="{{profile}}" download="{{profile}}" title="{{#str}}download{{/str}}"><i class="fa fa-download">
+        <a role="button" class="text-success mx-3" href="{{profile}}" download="{{profile}}" title="{{#str}}download{{/str}}"><i class="fa fa-download">
         </i></a>
-        <a role="button" aria-hidden="true" class="text-danger" data-action="deletemodal" data-id={{id}} data-name={{fullname}}
+        <a role="button" aria-hidden="true" class="text-danger mx-3" data-action="deletemodal" data-id={{id}} data-name={{fullname}}
         title="{{#str}}deletename,local_message{{/str}}">{{#pix}}t/delete, core{{/pix}}</a>
         {{/manage}}
     </td>
@@ -93,17 +78,13 @@
 
 </table>
 {{#manage}}
-<!-- <a role="button" aria-hidden="true" class="btn btn-success" data-action="uploadrecords" title="{{#str}}upload{{/str}}">
-<i class="fa fa-upload"></i>&ensp;{{#str}}upload{{/str}}</a> -->
+<a role="button" aria-hidden="true" class="btn btn-success" data-action="uploadrecords" title="{{#str}}upload{{/str}}">
+<i class="fa fa-upload"></i>&ensp;{{#str}}upload{{/str}}</a>
 <a role="button" aria-hidden="true" class="btn btn-success" href="recordform.php" title="{{#str}}upload{{/str}}">
 <i class="fa fa-upload"></i>&ensp;{{#str}}upload{{/str}}</a>
 <a role="button" class="btn btn-secondary" href="download.php" title="{{#str}}download{{/str}}"><i class="fa fa-download">
 </i>&ensp;{{#str}}download{{/str}}</a>
 {{/manage}}
-
-
-</div>
-</div>
 
 
 

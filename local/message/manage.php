@@ -1,5 +1,4 @@
 <?php
-use function PHPUnit\Framework\throwException;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -36,6 +35,9 @@ $PAGE->requires->js_call_amd('local_message/messageform', 'init');
 
 $PAGE->set_title(get_string('managetitle', 'local_message'));
 $PAGE->set_heading(get_string('headingmanage', 'local_message'));
+$PAGE->requires->jquery();
+$PAGE->requires->js_call_amd('local_message/my_datatables', 'init');
+$PAGE->requires->css('/local/message/styles/style.css');
 require_login();
 
 if (isguestuser()) {

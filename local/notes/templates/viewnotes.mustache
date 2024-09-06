@@ -24,8 +24,8 @@
     }
 }}
 
-<table class="generaltable" id="viewnotestable">
-    <thead class="table-dark">
+<table class="display" id="viewnotestable">
+    <thead class="table-dark text-center">
     <tr>
     <th>{{#str}}id, local_notes{{/str}}</th>
     <th>{{#str}}fullname, local_notes{{/str}}</th>
@@ -34,7 +34,7 @@
     <th>{{#str}}timecreated, local_notes{{/str}}</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody class="text-center">
     {{#notes}}
     <tr>
     <td>{{id}} </td>
@@ -46,6 +46,4 @@
     {{/notes}}
     </tbody>
     </table>
-<div class="mt-5">
-    <a href = "{{postnotes}}" aria-role = "button">{{#str}} postnotes, local_notes {{/str}}</a>
-</div>
+

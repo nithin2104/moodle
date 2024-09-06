@@ -36,4 +36,6 @@ $string['fullname'] = 'Full Name';
 $string['userid'] = 'User Id';
 $string['usernotes'] = 'Notes';
 $string['timecreated'] = 'Time Created';
+$string['helper'] = 'Notes';
+$string['helper_help'] = 'Enter Notes';
 

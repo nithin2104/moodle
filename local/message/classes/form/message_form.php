@@ -54,7 +54,7 @@ class message_form extends dynamic_form {
         $editoroptions = $this->_customdata['editoroptions'];
 
         $mform->addElement('filemanager', 'profile', "Profile", null,
-                   ['subdirs' => 0, 'maxbytes' => $CFG->maxbytes, 'areamaxbytes' => 10485760, 'maxfiles' => 1,
+                   ['subdirs' => 0, 'maxbytes' => $CFG->maxbytes, 'areamaxbytes' => 10485760, 'maxfiles' => 10,
                    'accepted_types' => ['jpg', 'jpeg', 'png'], ]);
 
         $mform->addElement('text', 'firstname', "First Name ");
@@ -68,7 +68,7 @@ class message_form extends dynamic_form {
         $textfieldoptions = [
             'trusttext' => true,
             'subdirs' => true,
-            'maxfiles' => $CFG->maxfiles,
+            'maxfiles' => 10,
             'maxbytes' => 10485760,
             'context' => $context,
         ];
@@ -80,7 +80,6 @@ class message_form extends dynamic_form {
             $textfieldoptions
         )->setValue( ['text' => 'Default text!']);
         $mform->setType('description_editor', PARAM_TEXT);
-
 
         $mform->addElement('hidden', 'status');
         $mform->setType('int', PARAM_INT);
@@ -113,7 +112,6 @@ class message_form extends dynamic_form {
      * Checks if current user has access to this form, otherwise throws exception
      */
     protected function check_access_for_dynamic_submission(): void {
-        require_capability('local/greetings:viewmessages', $this->get_context_for_dynamic_submission());
     }
 
     /**
