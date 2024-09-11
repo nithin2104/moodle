@@ -23,9 +23,12 @@
  */
 
 require('../../config.php');
+
 global $DB, $PAGE, $CFG;
+
 $contextid = optional_param('contextid', '', PARAM_INT);
 $context = context::instance_by_id($contextid);
+
 if ($context->contextlevel == 50) {
     $course = $DB->get_record('course', ['id' => $context->instanceid]);
     require_login($course);
@@ -36,6 +39,7 @@ if ($context->contextlevel == 50) {
     require_login($ccourse, false, $course);
     $PAGE->activityheader->disable();
 }
+
 $url = new moodle_url('/local/notes/viewnotes.php', ['contextid' => $contextid]);
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('incourse');
@@ -43,10 +47,12 @@ $PAGE->add_body_class('limitedwidth');
 $PAGE->requires->js_call_amd('local_notes/my_datatables', 'init');
 $PAGE->requires->css('/local/message/styles/style.css');
 
+$renderable = new \local_notes\output\main($contextid);
 $output = $PAGE->get_renderer('local_notes');
 
-$renderable = new \local_notes\output\main($contextid);
 echo $OUTPUT->header();
+
+echo html_writer::tag('h2', get_string('usernotes', 'local_notes'));
 
 echo $output->render($renderable);
 

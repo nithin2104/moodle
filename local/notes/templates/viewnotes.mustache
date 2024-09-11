@@ -25,25 +25,27 @@
 }}
 
 <table class="display" id="viewnotestable">
-    <thead class="table-dark text-center">
+  <thead class="table-dark text-center">
     <tr>
-    <th>{{#str}}id, local_notes{{/str}}</th>
-    <th>{{#str}}fullname, local_notes{{/str}}</th>
-    <th>{{#str}}usernotes, local_notes{{/str}}</th>
-    <th>{{#str}}userid, local_notes{{/str}}</th>
-    <th>{{#str}}timecreated, local_notes{{/str}}</th>
+      <th>{{#str}}id, local_notes{{/str}}</th>
+      <th>{{#str}}fullname, local_notes{{/str}}</th>
+      <th>{{#str}}usernotes, local_notes{{/str}}</th>
+      <th>{{#str}}userid, local_notes{{/str}}</th>
+      <th>{{#str}}timecreated, local_notes{{/str}}</th>
     </tr>
-    </thead>
-    <tbody class="text-center">
+  </thead>
+  <tbody class="text-center">
     {{#notes}}
     <tr>
-    <td>{{id}} </td>
-    <td>{{firstname}} {{lastname}}</td>
-    <td>{{usernotes}}</td>
-    <td>{{userid}}</td>
-    <td>{{#userdate}} {{timecreated}}, {{#str}} strftimedatetime, core_langconfig {{/str}} {{/userdate}}</td>
+      <td>{{ id }}</td>
+      <td>{{ firstname }} {{ lastname }}</td>
+      <td>{{ usernotes }}</td>
+      <td>{{ userid }}</td>
+      <td>
+        {{#userdate}} {{ timecreated }}, {{#str}} strftimedatetime,
+        core_langconfig {{/str}} {{/userdate}}
+      </td>
     </tr>
     {{/notes}}
-    </tbody>
-    </table>
-
+  </tbody>
+</table>

@@ -23,27 +23,31 @@
  */
 
 require('../../config.php');
-global $DB, $PAGE, $CFG;
 use local_notes\form\notes_form as notes_form;
+global $DB, $PAGE, $CFG;
+
 $contextid = optional_param('contextid', '', PARAM_INT);
 $context = context::instance_by_id($contextid);
+
 if ($context->contextlevel == 50) {
     $course = $DB->get_record('course', ['id' => $context->instanceid]);
     require_login($course);
-    $PAGE->set_heading($course->fullname. " : " .get_string('pluginname', 'local_notes'));
+    $PAGE->set_heading($course->fullname . " : " . get_string('pluginname', 'local_notes'));
+
 } else {
     $course = $DB->get_record('course_modules', ['id' => $context->instanceid]);
     $ccourse = $DB->get_record('course', ['id' => $course->course]);
     require_login($ccourse, false, $course);
     $PAGE->activityheader->disable();
-
 }
+
 $url = new moodle_url('/local/notes/index.php', ['contextid' => $contextid]);
 $PAGE->set_url($url);
-$PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 $PAGE->add_body_class('limitedwidth');
+
 $mform = new notes_form(new moodle_url('/local/notes/index.php', ['contextid' => $contextid]));
+
 if ($data = $mform->get_data()) {
     $textfileoptions = [
         'trusttext' => true,
@@ -72,9 +76,15 @@ if ($data = $mform->get_data()) {
 }
 
 echo $OUTPUT->header();
+
+echo html_writer::tag('h2', get_string('pluginname', 'local_notes'));
+
 $mform->display();
+
 echo html_writer::link(
-                        new moodle_url('/local/notes/viewnotes.php', ['contextid' => $contextid]),
-                        get_string('viewcontextnotes', 'local_notes'), ['role' => 'button']
-                    );
+    new moodle_url('/local/notes/viewnotes.php', ['contextid' => $contextid]),
+    get_string('viewcontextnotes', 'local_notes'),
+    ['role' => 'button']
+);
+
 echo $OUTPUT->footer();
