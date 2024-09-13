@@ -15,26 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * English language pack for local_notes
+ * External functions and service declaration for Messages plugin
+ *
+ * Documentation: {@link https://moodledev.io/docs/apis/subsystems/external/description}
  *
  * @package    local_notes
- * @category   string
+ * @category   webservice
  * @copyright  2024 LMSCloud.io
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Notes Plugin';
-$string['notes'] = 'Enter Your Notes';
-$string['defaulttext'] = 'This is the default text that will appear in the editor.';
-$string['cancelform'] = 'Form cancelled';
-$string['viewcontextnotes'] = 'View Notes...';
-$string['postnotes'] = 'Post Your Notes...';
-$string['id'] = 'ID';
-$string['fullname'] = 'Full Name';
-$string['userid'] = 'User Id';
-$string['usernotes'] = 'Notes';
-$string['timecreated'] = 'Time Created';
-$string['starred'] = 'Starred';
-
+$functions = [
+    'local_notes_favourites' => [
+        'classname' => 'local_notes\external\favourites',
+        'methodsname' => 'execute',
+        'classpath' => 'local/notes/classes/external/favourites.php',
+        'description' => 'Add Delete favourites',
+        'type' => 'read',
+        'ajax' => true,
+    ],
+];

@@ -23,59 +23,88 @@
     {
     }
 }}
+<style>
+  /* Custom styles for the star icon */
+  .star {
+    cursor: pointer;
+    transition: color 0.3s ease; /* Smooth color transition */
+  }
 
-<div class="no-overflow">
-  <div class="table-responsive">
-    <table class="generaltable table-sm" id="viewmsgtable">
-      <thead class="table-dark">
-        <tr>
-          <th class="text-center">{{#str}}idnumber{{/str}}</th>
-          <th class="text-center">
-            {{#str}}messagetext, local_message{{/str}}
-          </th>
-          <th class="text-center">
-            {{#str}}messagetype, local_message{{/str}}
-          </th>
-          <th class="text-center">{{#str}}actions, local_message{{/str}}</th>
-        </tr>
-      </thead>
-      <tbody class="table-white text-center">
-        {{#messages}}
-        <tr>
-          <td>{{ id }}</td>
-          <td>{{ messagetext }}</td>
-          <td>{{ messagetype }}</td>
-          <td class="d-flex justify-content-around">
-            {{#manage}}
-            <a href="/moodle/local/message/update.php?id={{ id }}" class="mx-2"
-              ><i
-                class="fa fa-pencil fa-fw"
-                title="{{ updatename }}"
-                aria-hidden="true"
-              ></i
-            ></a>
+  .star.favorited {
+    color: gold; /* Color of the filled star */
+  }
 
-            <a
-              type="button"
-              class="mx-2 text-danger"
-              data-modal="confirmation"
-              data-modal-title-str='["delete", "core"]'
-              data-modal-content-str='["areyousure"]'
-              data-modal-yes-button-str='["delete", "core"]'
-              data-modal-destination="/moodle/local/message/delete.php?id={{
-                id
-              }}"
-            >
-              {{#pix}} t/delete, core, {{ deletename }} {{/pix}}
-            </a>
-            {{/manage}}
-          </td>
-        </tr>
-        {{/messages}}
-      </tbody>
-    </table>
-  </div>
-</div>
+  .star:hover {
+    color: orange; /* Color change on hover */
+  }
+</style>
 
+<table class="display" id="viewmsgtable">
+  <thead class="table-dark">
+    <tr>
+      <th class="text-center">{{#str}}idnumber{{/str}}</th>
+      <th class="text-center">{{#str}}messagetext, local_message{{/str}}</th>
+      <th class="text-center">{{#str}}messagetype, local_message{{/str}}</th>
+      {{#manage}}<th class="text-center">{{#str}}actions, local_message{{/str}}</th>{{/manage}}
+      <th class="text-center">{{#str}}starred, local_message{{/str}}</th>
+    </tr>
+  </thead>
+  <tbody class="table-white text-center">
+    {{#messages}}
+    <tr>
+      <td>{{ id }}</td>
+      <td>{{ messagetext }}</td>
+      <td>{{ messagetype }}</td>
+      {{#manage}}
+      <td class="text-center">
+        <a href="/moodle/local/message/update.php?id={{ id }}" class="mx-2"
+          ><i
+            class="fa fa-pencil fa-fw"
+            title="{{ updatename }}"
+            aria-hidden="true"
+          ></i
+        ></a>
+
+        <a
+          type="button"
+          class="mx-2 text-danger"
+          data-modal="confirmation"
+          data-modal-title-str='["delete", "core"]'
+          data-modal-content-str='["areyousure"]'
+          data-modal-yes-button-str='["delete", "core"]'
+          data-modal-destination="/moodle/local/message/delete.php?id={{ id }}"
+        >
+          {{#pix}} t/delete, core, {{ deletename }} {{/pix}}
+        </a>
+    </td>
+    {{/manage}}
+      {{#fid}}
+      <td>
+        <span
+          class="star favorited"
+          data-favorited="true"
+          data-action="star"
+          data-id="{{ id }}"
+        >
+          <i class="icon fa fa-star fa-fw" aria-hidden="true"></i
+        ></span>
+      </td>
+      {{/fid}}
+      {{^fid}}
+      <td>
+        <span
+          class="star"
+          data-favorited="false"
+          data-action="star"
+          data-id="{{ id }}"
+        >
+          <i class="icon fa fa-star-o fa-fw" aria-hidden="true"></i
+        ></span>
+      </td>
+      {{/fid}}
+    </tr>
+    {{/messages}}
+  </tbody>
+</table>
 
 <a href="{{ manageurl }}" class="btn btn-primary">{{ actionpage }}</a>

@@ -24,6 +24,21 @@
     }
 }}
 
+<style>
+    /* Custom styles for the star icon */
+    .star {
+      cursor: pointer;
+      transition: color 0.3s ease; /* Smooth color transition */
+    }
+
+    .star.favorited {
+      color: gold; /* Color of the filled star */
+    }
+
+    .star:hover {
+      color: orange; /* Color change on hover */
+    }
+</style>
 <table class="display" id="viewnotestable">
   <thead class="table-dark text-center">
     <tr>
@@ -32,6 +47,7 @@
       <th>{{#str}}usernotes, local_notes{{/str}}</th>
       <th>{{#str}}userid, local_notes{{/str}}</th>
       <th>{{#str}}timecreated, local_notes{{/str}}</th>
+      <th>{{#str}}starred, local_notes{{/str}}</th>
     </tr>
   </thead>
   <tbody class="text-center">
@@ -45,6 +61,32 @@
         {{#userdate}} {{ timecreated }}, {{#str}} strftimedatetime,
         core_langconfig {{/str}} {{/userdate}}
       </td>
+      {{#fid}}
+      <td>
+        <span
+          class="star favorited"
+          data-favorited="true"
+          data-action="star"
+          data-id="{{ id }}"
+          context-id="{{ linkcontextid }}"
+        >
+          <i class="icon fa fa-star fa-fw" aria-hidden="true"></i
+        ></span>
+      </td>
+      {{/fid}}
+      {{^fid}}
+      <td>
+        <span
+          class="star"
+          data-favorited="false"
+          data-action="star"
+          data-id="{{ id }}"
+          context-id="{{ linkcontextid }}"
+        >
+          <i class="icon fa fa-star-o fa-fw" aria-hidden="true"></i
+        ></span>
+      </td>
+      {{/fid}}
     </tr>
     {{/notes}}
   </tbody>

@@ -32,7 +32,7 @@ function local_notes_extend_navigation_frontpage($navigation) {
     $context = $PAGE->context;
     if (isloggedin() && !isguestuser()) {
         $navigation->add(
-            get_string('pluginname', 'local_notes'),
+            get_string('usernotes', 'local_notes'),
             new moodle_url('/local/notes/index.php', ['contextid' => $context->id]),
             navigation_node::TYPE_CUSTOM,
         );
@@ -51,7 +51,7 @@ function local_notes_extend_navigation_course($navigation, $course) {
 
     if (isloggedin() && !isguestuser()) {
         $navigation->add(
-            get_string('pluginname', 'local_notes'),
+            get_string('usernotes', 'local_notes'),
             new moodle_url('/local/notes/index.php', ['contextid' => $context->id]),
             navigation_node::TYPE_CUSTOM,
         );
@@ -69,7 +69,7 @@ function local_notes_extend_navigation_module($navigation, $cm) {
     global $PAGE;
     $context = $PAGE->context;
     $url = new moodle_url('/local/notes/index.php', ['contextid' => $context->id]);
-    $navigation->add(get_string('pluginname', 'local_notes'),
+    $navigation->add(get_string('usernotes', 'local_notes'),
         $url,
         navigation_node::TYPE_CUSTOM)->set_show_in_secondary_navigation(true);
 }

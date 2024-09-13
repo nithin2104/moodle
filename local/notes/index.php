@@ -32,7 +32,7 @@ $context = context::instance_by_id($contextid);
 if ($context->contextlevel == 50) {
     $course = $DB->get_record('course', ['id' => $context->instanceid]);
     require_login($course);
-    $PAGE->set_heading($course->fullname . " : " . get_string('pluginname', 'local_notes'));
+    $PAGE->set_heading($course->fullname . " : " . get_string('usernotes', 'local_notes'));
 
 } else {
     $course = $DB->get_record('course_modules', ['id' => $context->instanceid]);
@@ -77,7 +77,7 @@ if ($data = $mform->get_data()) {
 
 echo $OUTPUT->header();
 
-echo html_writer::tag('h2', get_string('pluginname', 'local_notes'));
+echo html_writer::tag('h2', get_string('usernotes', 'local_notes'));
 
 $mform->display();
 

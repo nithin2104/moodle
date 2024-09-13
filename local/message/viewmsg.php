@@ -24,9 +24,10 @@
 
 require_once(__DIR__ . "/../../config.php");
 
-global $DB;
+global $DB, $USER;
 
 $context = context_system::instance();
+$usercontext = context_user::instance($USER->id);
 $PAGE->set_context($context);
 $PAGE->set_url("/local/message/viewmsg.php");
 
@@ -45,7 +46,15 @@ if (has_capability('local/message:manage', $context)) {
 } else {
     $manage = false;
 }
-$result = $DB->get_records("local_message");
+
+$ufservice = \core_favourites\service_factory::get_service_for_user_context($usercontext);
+list($favsql, $favparams) = $ufservice->get_join_sql_by_type('local_message', 'message', 'favalias', 'c.id');
+$sql = "SELECT m.id, m.messagetext, m.messagetype, f.id as fid
+        FROM {local_message} m
+        LEFT JOIN {favourite} f ON f.itemid = m.id AND f.userid = $USER->id
+        ORDER BY CASE WHEN f.id IS NULL THEN m.id ELSE f.id END DESC";
+
+$result = $DB->get_records_sql($sql);
 $records = array_values($result);
 
 echo $OUTPUT->header();

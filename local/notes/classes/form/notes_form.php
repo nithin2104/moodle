@@ -67,7 +67,6 @@ class notes_form extends \moodleform {
         if (empty(trim($data['usernotes_editor']['text']))) {
             $errors['usernotes_editor'] = get_string('required');
         }
-
         return $errors;
     }
 }

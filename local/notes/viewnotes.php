@@ -42,7 +42,7 @@ if ($context->contextlevel == 50) {
 
 $url = new moodle_url('/local/notes/viewnotes.php', ['contextid' => $contextid]);
 $PAGE->set_url($url);
-$PAGE->set_pagelayout('incourse');
+$PAGE->set_pagelayout('standard');
 $PAGE->add_body_class('limitedwidth');
 $PAGE->requires->js_call_amd('local_notes/my_datatables', 'init');
 $PAGE->requires->css('/local/message/styles/style.css');

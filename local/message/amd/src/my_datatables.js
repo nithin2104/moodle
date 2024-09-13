@@ -21,13 +21,47 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import $ from "jquery";
+import Ajax from 'core/ajax';
 import "local_message/datatables";
 
+const selectors = {
+    actions: {
+        star: '[data-action="star"]',
+    }
+};
 export const init = () => {
     $(function() {
         $('#viewmsgtable').DataTable({
             'bLengthChange': false,
             'ordering': false,
         });
+    });
+    document.addEventListener('click', e => {
+        let starred = e.target.closest(selectors.actions.star);
+        if (starred) {
+            var isfav = starred.getAttribute('data-favorited') === 'true';
+            var id = starred.getAttribute('data-id');
+            var params = {};
+            if (isfav) {
+                params.fav = false;
+                params.id = id;
+            } else {
+                params.fav = true;
+                params.id = id;
+            }
+            var promise = Ajax.call([{
+                methodname: "local_message_favourites",
+                args: params,
+            }]);
+            promise[0]
+                .done(function() {
+                    // Success.
+                    window.location.reload(true);
+                })
+                .fail(function() {
+                    // Failed.
+                });
+        }
+
     });
 };

@@ -53,14 +53,15 @@ class main implements renderable, templatable {
      * @return \stdClass
      */
     public function export_for_template(renderer_base $output) {
-        global $DB;
+        global $DB, $USER;
         $data = new \stdClass();
 
-        $sql = "SELECT n.id, u.firstname, u.lastname, n.usernotes, n.userid, n.timecreated
-                FROM {local_user_notes} n
-                LEFT JOIN {user} u ON u.id = n.userid
-                WHERE n.linkcontextid = $this->cid
-                ORDER BY timecreated DESC";
+        $sql = "SELECT n.id, u.firstname, u.lastname, n.usernotes, n.userid, n.timecreated, n.linkcontextid, f.id as fid
+                  FROM {local_user_notes} n
+                  JOIN {user} u ON u.id = n.userid
+             LEFT JOIN {favourite} f ON f.itemid = n.id AND f.userid = $USER->id
+                 WHERE n.linkcontextid = $this->cid
+             ORDER BY CASE WHEN f.id IS NULL THEN n.id ELSE f.id END DESC";
         $result = $DB->get_records_sql($sql);
         $data->notes = array_values($result);
         return $data;

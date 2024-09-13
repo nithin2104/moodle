@@ -56,9 +56,11 @@ $string['pluginname'] = 'Messages plugin';
  $string['timeupdated'] = 'Time Updated';
  $string['userid'] = 'User Id';
  $string['actions'] = 'Actions';
+ $string['starred'] = 'Starred';
  $string['areyousure'] = 'Are you sure? {$a}.';
  $string['emptyid'] = 'Id is not passed along with delete record.';
  $string['eventmessagecreated'] = 'Message Created';
+ $string['messageprovider:submitted'] = 'Message submitted';
 
 
 

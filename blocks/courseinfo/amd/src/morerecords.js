@@ -31,8 +31,7 @@ var btnLess = $("#seeLessRecords");
 var btnLess2 = $("#seeLessRecords2");
 var trsLength = trs.length;
 var trsLength2 = trs2.length;
-// alert(trsLength);
-// alert(trsLength2);
+
 var currentIndex = 1;
 var currentIndex2 = 1;
 

@@ -60,7 +60,18 @@ if ($mform->is_cancelled()) {
     $userfrom = core_user::get_noreply_user();
     $messagebody = "Message : $fromform->messagetext \n Message type : $fromform->messagetype \n \n Best Regards, \n Moodle.";
     // email_to_user($USER, $userfrom, 'Message App', $messagebody);
-    redirect($CFG->wwwroot . "/local/message/manage.php", get_string('submitform', 'local_message') . $fromform->messagetext);
+    $message = new \core\message\message();
+    $message->component = 'local_message';
+    $message->name = 'submitted';
+    $message->userfrom = $USER;
+    $message->userto = get_admin();
+    $message->subject = 'Message Submitted By '. fullname($USER);
+    $message->fullmessage = $messagebody;
+    $message->fullmessageformat = FORMAT_PLAIN;
+    $message->notification = 1;
+    message_send($message);
+
+    redirect($CFG->wwwroot . "/local/message/viewmsg.php", get_string('submitform', 'local_message') . $fromform->messagetext);
 } else {
     $mform->set_data($fromform);
     // Display the form.

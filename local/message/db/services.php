@@ -36,4 +36,12 @@ $functions = [
         'type' => 'read',
         'ajax' => true,
     ],
+    'local_message_favourites' => [
+        'classname' => 'local_message\external\favourites',
+        'methodsname' => 'execute',
+        'classpath' => 'local/messgae/classes/external/favourites.php',
+        'description' => 'Add Delete favourites',
+        'type' => 'read',
+        'ajax' => true,
+    ],
 ];
