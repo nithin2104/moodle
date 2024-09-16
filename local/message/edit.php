@@ -23,8 +23,6 @@
  */
 use local_message\form\edit as edit;
 require_once(__DIR__ . "/../../config.php");
-// require_once($CFG->dirroot . "/local/message/classes/form/edit.php");
-
 
 require_login();
 global $DB, $USER;
@@ -57,9 +55,7 @@ if ($mform->is_cancelled()) {
     $event->add_record_snapshot('local_message', $fromform);
     $event->trigger();
     // Sending email to admin about message creation.
-    $userfrom = core_user::get_noreply_user();
     $messagebody = "Message : $fromform->messagetext \n Message type : $fromform->messagetype \n \n Best Regards, \n Moodle.";
-    // email_to_user($USER, $userfrom, 'Message App', $messagebody);
     $message = new \core\message\message();
     $message->component = 'local_message';
     $message->name = 'submitted';
@@ -69,13 +65,31 @@ if ($mform->is_cancelled()) {
     $message->fullmessage = $messagebody;
     $message->fullmessageformat = FORMAT_PLAIN;
     $message->notification = 1;
-    message_send($message);
+    // message_send($message);
+
+    // Using adhoc taskt to send message notification to admin.
+    $sendmessage = new \local_message\task\send_message_notification();
+    $data = [
+        'messagebody' => $messagebody,
+        'user' => $USER,
+    ];
+    $sendmessage->set_custom_data($data);
+    // \core\task\manager::queue_adhoc_task($sendmessage);
 
     redirect($CFG->wwwroot . "/local/message/viewmsg.php", get_string('submitform', 'local_message') . $fromform->messagetext);
 } else {
     $mform->set_data($fromform);
     // Display the form.
     // $mform->display();.
+}
+/**
+ * Summary of send_message_to_admin
+ * @param mixed $messagebody
+ * @return void
+ */
+function send_message_to_admin($messagebody) {
+
+    global $USER;
 }
 
 echo $OUTPUT->header();

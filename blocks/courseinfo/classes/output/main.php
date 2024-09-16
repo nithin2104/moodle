@@ -44,6 +44,7 @@ class main implements renderable, templatable {
         global $DB, $USER, $CFG;
         $data = new \stdClass();
         // $apiobj = new \api();
+        // print_object($apiobj->get_courses_and_completion($USER->id));
         $student = array_values((new manager)->get_mycourse_list_with_teachername_ccp());
         if (count($student) > 0) {
 
@@ -56,6 +57,7 @@ class main implements renderable, templatable {
         }
         $data->enroled_courses_as_student = $student;
         $data->courses_as_teacher = $teacher;
+        $data->wwwroot = $CFG->wwwroot;
         return $data;
     }
 

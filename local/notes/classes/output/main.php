@@ -63,6 +63,8 @@ class main implements renderable, templatable {
                  WHERE n.linkcontextid = $this->cid
              ORDER BY CASE WHEN f.id IS NULL THEN n.id ELSE f.id END DESC";
         $result = $DB->get_records_sql($sql);
+        // print_object($result);
+        // die;
         $data->notes = array_values($result);
         return $data;
     }
