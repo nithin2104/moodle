@@ -57,6 +57,12 @@ $sql = "SELECT m.id, m.messagetext, m.messagetype, f.id as fid
 $result = $DB->get_records_sql($sql);
 $records = array_values($result);
 
+$api = new local_message\api();
+
+
+// $result = $api->get_messages();
+
+
 echo $OUTPUT->header();
 
 $templatecontext = [

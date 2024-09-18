@@ -43,6 +43,7 @@ class edit extends \moodleform {
         $mform->setType('id', PARAM_INT);
         $mform->addElement('text', 'messagetext', get_string('messagetext', 'local_message'), ['placeholder' => 'Enter message']);
         $mform->setType('messagetext', PARAM_NOTAGS);
+        $mform->addRule('messagetext', 'required', 'required');
 
         $choices = [
             $choices['0'] = \core\output\notification::NOTIFY_SUCCESS,

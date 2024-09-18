@@ -44,4 +44,12 @@ $functions = [
         'type' => 'read',
         'ajax' => true,
     ],
+    'local_message_get_messages' => [
+        'classname' => 'local_message\external\get_messages',
+        'methodsname' => 'execute',
+        'classpath' => 'local/messgae/classes/external/get_messages.php',
+        'description' => 'Add Delete favourites',
+        'type' => 'read',
+        'ajax' => true,
+    ],
 ];
