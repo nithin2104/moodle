@@ -15,12 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * TODO describe file upload
+ * English language pack for theme_logintheme
  *
- * @package    local_message
+ * @package    theme_logintheme
+ * @category   string
  * @copyright  2024 LMSCloud.io
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once('../../config.php');
 
-require_login();
+defined('MOODLE_INTERNAL') || die();
+
+$string['choosereadme'] = 'theme_logintheme is a theme...';
+$string['pluginname'] = 'theme_logintheme';
+$string['login'] = 'LOG IN';
+$string['region-side-pre'] = 'Right';
