@@ -28,7 +28,6 @@ use external_value;
 use external_warnings;
 use stdClass;
 use context_system;
-use local_message\manager as manager;
 /**
  * Class favourites
  *

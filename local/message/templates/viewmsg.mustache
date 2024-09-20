@@ -108,3 +108,20 @@
 </table>
 
 <a href="{{ manageurl }}" class="btn btn-primary">{{ actionpage }}</a>
+<button
+    class="btn btn-warning"
+    data-action="core_payment/triggerPayment"
+    data-component="enrol_fee"
+    data-paymentarea="fee"
+    data-itemid="{{itemid}}"
+    data-cost="{{coststring}}"
+    data-description="{{description}}"
+>
+    {{# str }} sendpaymentbutton, enrol_fee {{/ str }}
+</button>
+
+{{#js}}
+    require(['core_payment/gateways_modal'], function(modal) {
+        modal.init();
+    });
+{{/js}}

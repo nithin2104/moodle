@@ -58,7 +58,7 @@ class main implements renderable, templatable {
         $sql = "SELECT n.id, u.firstname, u.lastname, n.usernotes, n.userid, n.timecreated, n.linkcontextid, f.id as fid
                   FROM {local_user_notes} n
                   JOIN {user} u ON u.id = n.userid
-             LEFT JOIN {favourite} f ON f.itemid = n.id AND f.userid = $USER->id
+             LEFT JOIN {favourite} f ON f.itemid = n.id AND f.userid = $USER->id AND f.component = 'local_notes'
                  WHERE n.linkcontextid = $this->cid
              ORDER BY CASE WHEN f.id IS NOT NULL THEN n.id ELSE NULL END DESC, n.id DESC";
         $result = $DB->get_records_sql($sql);

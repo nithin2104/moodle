@@ -70,7 +70,6 @@ if ($data = $mform->get_data()) {
     $data->linkcontextid = $context->id;
     $data->userid = $USER->id;
     $data->timecreated = time();
-
     $data->id = $DB->insert_record('local_user_notes', $data);
     redirect(new moodle_url('/local/notes/viewnotes.php', ['contextid' => $contextid]));
 }

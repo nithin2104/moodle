@@ -26,7 +26,6 @@ use external_function_parameters;
 use external_single_structure;
 use external_value;
 use external_warnings;
-use stdClass;
 use context_system;
 use local_message\manager as manager;
 /**

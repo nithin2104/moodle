@@ -51,7 +51,7 @@ $ufservice = \core_favourites\service_factory::get_service_for_user_context($use
 list($favsql, $favparams) = $ufservice->get_join_sql_by_type('local_message', 'message', 'favalias', 'c.id');
 $sql = "SELECT m.id, m.messagetext, m.messagetype, f.id as fid
         FROM {local_message} m
-        LEFT JOIN {favourite} f ON f.itemid = m.id AND f.userid = $USER->id
+        LEFT JOIN {favourite} f ON f.itemid = m.id AND f.userid = $USER->id AND f.component = 'local_message'
         ORDER BY CASE WHEN f.id IS NULL THEN m.id ELSE f.id END DESC";
 
 $result = $DB->get_records_sql($sql);
