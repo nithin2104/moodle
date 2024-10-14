@@ -93,4 +93,5 @@ class helper {
 
         return $title;
     }
+
 }

@@ -43,7 +43,7 @@
                     {{#pix}} i/trash, core{{/pix}} Delete
                 </button>
                 {{#usercanedit}}
-                <a href="{{editurl}}" class="icon-no-margin mx-2 btn btn-warning text-nowrap" title="edit" data-action="edit">
+                <a href="{{editcontenturl}}" class="icon-no-margin mx-2 btn btn-warning text-nowrap" title="edit" data-action="edit">
                     {{#pix}} i/edit, core{{/pix}} Edit
                 </a>
                 {{/usercanedit}}
@@ -52,15 +52,9 @@
                 </a>
             </div>
         </div>
-        {{#contenttypeh5p}}
-            {{{html}}}
-        {{/contenttypeh5p}}
-        {{^contenttypeh5p}}
-        <div class="border border-secondary p-2">
-            <iframe src="{{file}}" width="100%" height="500px" frameborder="0"></iframe>
+        <div>
+            {{{contenthtml}}}
         </div>
-        {{/contenttypeh5p}}
-
     </div>
 </div>
 {{/actions}}

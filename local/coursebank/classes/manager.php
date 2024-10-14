@@ -97,7 +97,7 @@ class manager {
      * @return \stdClass[]
      */
     public function get_coursebank_files() {
-        global $DB, $CFG, $SITE;
+        global $DB, $CFG, $SITE, $OUTPUT;
         $data = [];
         $result = $DB->get_records('local_coursebank', ['contextid' => $this->context->id]);
         foreach ($result as $rec) {
@@ -124,6 +124,27 @@ class manager {
                     if (in_array($coursebank->contenttype, $ex)) {
 
                         $coursebank->icon = new \moodle_url($CFG->wwwroot.'/local/coursebank/pix/'.$coursebank->contenttype.'.png');
+                    } else if ($coursebank->contenttype === 'h5p') {
+                        $iconurl = $OUTPUT->image_url('f/h5p-64', 'moodle')->out(false);
+                        if (!empty($file)) {
+                            $h5p = \core_h5p\api::get_content_from_pathnamehash($file->get_pathnamehash());
+                            if (!empty($h5p)) {
+                                \core_h5p\local\library\autoloader::register();
+                                if ($h5plib = $DB->get_record('h5p_libraries', ['id' => $h5p->mainlibraryid])) {
+                                    $h5pfilestorage = new \core_h5p\file_storage();
+                                    $h5picon = $h5pfilestorage->get_icon_url(
+                                            $h5plib->id,
+                                            $h5plib->machinename,
+                                            $h5plib->majorversion,
+                                            $h5plib->minorversion);
+                                    if (!empty($h5picon)) {
+                                        $iconurl = $h5picon;
+                                    }
+                                }
+                            }
+                        }
+                        $coursebank->icon = $iconurl;
+                        $coursebank->h5picon = true;
                     } else {
                         $coursebank->icon = new \moodle_url($CFG->wwwroot.'/local/coursebank/pix/all.png');
                     }
@@ -161,15 +182,34 @@ class manager {
                                                             $file->get_filename());
                 $data->file = $fileurl;
                 $data->name = $file->get_filename();
-                $extensions = ['doc', 'jpeg', 'jpg', 'mp4', 'pdf', 'png', 'xlsx'];
-                if (in_array($data->contenttype, $extensions)) {
-
-                    $data->icon = new \moodle_url($CFG->wwwroot.'/local/coursebank/pix/'.$data->contenttype.'.png');
-                } else {
-                    $data->icon = new \moodle_url($CFG->wwwroot.'/local/coursebank/pix/all.png');
-                }
             }
         }
+        switch($data->contenttype) {
+            case 'h5p' :    $content = \core_h5p\player::display($data->file, new \stdClass(), true);
+                            $data->usercanedit = true;
+                            $urlparams = [
+                                            'contextid' => $rec->contextid,
+                                            'plugin' => 'h5p',
+                                            'id' => $rec->id,
+                                        ];
+                            $data->editcontenturl = (new \moodle_url('/local/coursebank/edit.php', $urlparams))->out(false);
+            break;
+            case 'jpeg' :   $content = "<img src='$data->file' class='img-fluid' alt='No Img' />";
+            break;
+            case 'jpg' :    $content = "<img src='$data->file' class='img-fluid' alt='No Img' />";
+            break;
+            case 'png' :    $content = "<img src='$data->file' class='img-fluid' alt='No Img' />";
+            break;
+            case 'mp4' :    $content = "<video width='100%' height='100%' controls>
+                                        <source src='$data->file'' type='video/mp4'>
+                                        Your browser does not support the video tag.
+                                        </video>";
+            break;
+            case 'pdf' :    $content = "<iframe src='$data->file' width='100%' height='500px' frameborder='0'></iframe>";
+            break;
+            default :   $content = "<p class='text-muted'>Preview not available..!</p>";
+        }
+        $data->contenthtml = $content;
         return $data;
     }
 }

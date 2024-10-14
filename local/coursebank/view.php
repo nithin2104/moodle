@@ -62,24 +62,9 @@ if ($action == 'delete') {
     redirect(new moodle_url('/local/coursebank/index.php', ['contextid' => $contextid]), 'Deleted successfully...');
 }
 $result = (new manager($contextid))->get_coursecontent_by_id($id);
-$editcontenturl = null;
-$usercanedit = false;
-if ($result->contenttype == 'h5p') {
-    $result->contenttypeh5p = true;
-    $result->html = \core_h5p\player::display($result->file, new \stdClass(), true);
-    $urlparams = [
-                    'contextid' => $contextid,
-                    'plugin' => 'h5p',
-                    'id' => $id,
-                ];
-    $editcontenturl = new moodle_url('/local/coursebank/edit.php', $urlparams);
-    $editcontenturl = $editcontenturl->out(false);
-    $usercanedit = true;
-}
+
 $templatecontext = [
     'actions' => $result,
-    'usercanedit' => $usercanedit,
-    'editurl' => $editcontenturl,
 ];
 echo $OUTPUT->header();
 echo $OUTPUT->heading($title, 2);
