@@ -45,6 +45,7 @@ class manager {
 
     /**
      * Summary of __construct
+     * @param mixed $contextid
      */
     public function __construct($contextid) {
         global $USER;

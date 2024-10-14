@@ -86,7 +86,7 @@ function local_coursebank_extend_navigation_category_settings($navigation, $cate
  * @param array $options
  * @return void
  */
-function local_coursebank_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+function local_coursebank_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
 
     $fs = get_file_storage();
     $file = $fs->get_file($context->id, 'local_coursebank', $filearea, $args[0], '/', $args[1]);

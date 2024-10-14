@@ -68,7 +68,7 @@ class editor extends moodleform {
         $context = \context::instance_by_id($this->_customdata['contextid']);
         if (empty($id) && empty($library)) {
             $returnurl = new \moodle_url('/local/coursebank/index.php', ['contextid' => $context->id]);
-            print_error('invalidcontentid', 'error', $returnurl);
+            throw new \moodle_exception('invalidcontentid', 'error', $returnurl);
         }
 
         $this->h5peditor = new h5peditor();

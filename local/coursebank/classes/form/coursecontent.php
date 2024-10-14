@@ -120,8 +120,6 @@ class coursecontent extends \core_form\dynamic_form {
         global $USER;
         $contextid = $this->get_context_for_dynamic_submission()->id;
         $data = $this->get_data();
-        // $this->save_stored_file('coursebank');
-
         if ($data) {
             $id = (new manager($contextid))->create_update($data);
         }
