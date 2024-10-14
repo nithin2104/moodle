@@ -150,7 +150,7 @@ class manager {
      * @return array
      */
     public function get_details() {
-        global $DB, $USER;
+        global $DB, $USER, $CFG;
         $context = context_system::instance();
         $result = $DB->get_records('local_message_crud');
         $resultset = [];
@@ -181,6 +181,8 @@ class manager {
                                                                 $file->get_filename());
                     $viewrec->profile = $fileurl;
                 }
+            } else {
+                $viewrec->profile = $CFG->wwwroot.'/local/message/pix/emptyprofile.jpg';
             }
             $resultset[] = $viewrec;
         }

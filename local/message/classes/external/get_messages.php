@@ -28,7 +28,7 @@ use external_value;
 use external_warnings;
 use stdClass;
 use context_system;
-use local_message\manager as manager;
+use block_listallcourses\manager as manager;
 /**
  * Class get_messages
  *
@@ -54,9 +54,20 @@ class get_messages extends external_api {
      * @return array[]
      */
     public static function execute() {
-        global $DB;
+        global $DB, $USER;
         $result = $DB->get_records('local_message');
-        return $result;
+        $courses = enrol_get_my_courses();
+        foreach ($courses as $c) {
+            $resulta = (new manager)->get_activities_list($c->id);
+            $rd = [];
+            foreach ($resulta as $r) {
+
+                $rd[] = (new manager)->get_activity_desc($c->id, $r->intanceid, $USER->id);
+
+            }
+            $tr[] = $rd;
+        }
+        return $tr;
     }
 
     /**
@@ -65,14 +76,19 @@ class get_messages extends external_api {
      * @return external_description
      */
     public static function execute_returns(): external_description {
-        return new \external_multiple_structure(
+        return new \external_multiple_structure(new \external_multiple_structure(new \external_multiple_structure(
             new external_single_structure(
                 [
-                    'id' => new external_value(PARAM_INT, 'ID'),
-                    'messagetext' => new external_value(PARAM_TEXT, 'messagetext'),
-                    'messagetype' => new external_value(PARAM_INT, 'messagetype'),
+                    'cmid' => new external_value(PARAM_INT, 'cmid'),
+                    'id' => new external_value(PARAM_INT, 'id'),
+                    'name' => new external_value(PARAM_TEXT, 'name'),
+                    'c_completion_state' => new external_value(PARAM_INT, 'c_completion_state'),
+                    'rawgrade' => new external_value(PARAM_FLOAT, 'rawgrade'),
+                    'rawgrademax' => new external_value(PARAM_FLOAT, 'rawgrademax'),
+                    'finalgrade' => new external_value(PARAM_FLOAT, 'finalgrade'),
+
                 ]
             )
-        );
+        )));
     }
 }

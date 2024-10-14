@@ -135,7 +135,7 @@ class contentbank {
     public function get_supported_extensions_as_string(context $context = null) {
         $supported = $this->load_context_supported_extensions($context);
         $extensions = array_keys($supported);
-        return implode(',', $extensions);
+        return $extensions;
     }
 
     /**
@@ -212,7 +212,6 @@ class contentbank {
             $sql .= ' AND ' . $DB->sql_like('name', ':name', false, false);
             $params['name'] = '%' . $DB->sql_like_escape($search) . '%';
         }
-
         $records = $DB->get_records_select('contentbank_content', $sql, $params, 'name ASC');
         foreach ($records as $record) {
             $content = $this->get_content_from_id($record->id);

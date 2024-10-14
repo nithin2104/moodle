@@ -69,7 +69,7 @@ class helper {
             'datecreated' => '',
             'path' => $path,
             'thumbnail' => $OUTPUT->image_url(file_folder_icon(90))->out(false),
-            'children' => []
+            'children' => [],
         ];
     }
 

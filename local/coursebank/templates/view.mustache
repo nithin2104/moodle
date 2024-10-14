@@ -1,0 +1,66 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_coursebank/view
+
+    TODO describe template view
+
+    Example context (json):
+    {
+    }
+}}
+
+{{#actions}}
+<div>
+    <div class="border border-secondary rounded p-3 d-flex flex-column justify-content-center">
+        <div class="mb-4">
+            <div class="d-inline-block w-50">
+                <a href="{{file}}" download="{{file}}">{{name}}</a>
+            </div>
+            <div class="d-inline float-right">
+                <button type="button" class="icon-no-margin btn btn-danger text-nowrap" title="delete"
+                    data-modal="confirmation"
+                    data-modal-title-str='["delete", "core"]'
+                    data-modal-content-str='["areyousure"]'
+                    data-modal-yes-button-str='["delete", "core"]'
+                    data-modal-toast="true"
+                    data-modal-toast-confirmation-str='["deleteblockinprogress", "block", "Online users"]'
+                    data-modal-destination="view.php?contextid={{contextid}}&id={{id}}&action=delete">
+                    {{#pix}} i/trash, core{{/pix}} Delete
+                </button>
+                {{#usercanedit}}
+                <a href="{{editurl}}" class="icon-no-margin mx-2 btn btn-warning text-nowrap" title="edit" data-action="edit">
+                    {{#pix}} i/edit, core{{/pix}} Edit
+                </a>
+                {{/usercanedit}}
+                <a href="index.php?contextid={{contextid}}" class="icon-no-margin mx-2 btn btn-secondary text-nowrap" title="exit" data-action="exit">
+                    {{#pix}} a/logout, core{{/pix}} Exit
+                </a>
+            </div>
+        </div>
+        {{#contenttypeh5p}}
+            {{{html}}}
+        {{/contenttypeh5p}}
+        {{^contenttypeh5p}}
+        <div class="border border-secondary p-2">
+            <iframe src="{{file}}" width="100%" height="500px" frameborder="0"></iframe>
+        </div>
+        {{/contenttypeh5p}}
+
+    </div>
+</div>
+{{/actions}}

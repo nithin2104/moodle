@@ -26,6 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['choosereadme'] = 'theme_logintheme is a theme...';
-$string['pluginname'] = 'theme_logintheme';
+$string['pluginname'] = 'Boost child theme';
 $string['login'] = 'LOG IN';
 $string['region-side-pre'] = 'Right';

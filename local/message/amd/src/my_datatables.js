@@ -20,48 +20,75 @@
  * @copyright  2024 LMSCloud.io
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+import Ajax from "core/ajax";
 import $ from "jquery";
-import Ajax from 'core/ajax';
 import "local_message/datatables";
+import Templates from "core/templates";
+import ModalFactory from "core/modal_factory";
+import ModalEvents from "core/modal_events";
 
 const selectors = {
-    actions: {
-        star: '[data-action="star"]',
-    }
+  actions: {
+    star: '[data-action="star"]',
+    mymodal: '[data-action="my_modal"]',
+  },
 };
 export const init = () => {
-    $(function() {
-        $('#viewmsgtable').DataTable({
-            'bLengthChange': false,
-            'ordering': false,
+  $(function() {
+    $("#viewmsgtable").DataTable({
+      bLengthChange: false,
+      ordering: false,
+    });
+  });
+  $(function() {
+    $(".mytable").DataTable({
+      bLengthChange: false,
+      ordering: false,
+    });
+  });
+  document.addEventListener("click", (e) => {
+    let starred = e.target.closest(selectors.actions.star);
+    if (starred) {
+      var isfav = starred.getAttribute("data-favorited") === "true";
+      var id = starred.getAttribute("data-id");
+      var params = {};
+      if (isfav) {
+        params.fav = false;
+        params.id = id;
+      } else {
+        params.fav = true;
+        params.id = id;
+      }
+      var promise = Ajax.call([
+        {
+          methodname: "local_message_favourites",
+          args: params,
+        },
+      ]);
+      promise[0]
+        .done(function() {
+          // Success.
+          window.location.reload(true);
+        })
+        .fail(function() {
+          // Failed.
         });
-    });
-    document.addEventListener('click', e => {
-        let starred = e.target.closest(selectors.actions.star);
-        if (starred) {
-            var isfav = starred.getAttribute('data-favorited') === 'true';
-            var id = starred.getAttribute('data-id');
-            var params = {};
-            if (isfav) {
-                params.fav = false;
-                params.id = id;
-            } else {
-                params.fav = true;
-                params.id = id;
-            }
-            var promise = Ajax.call([{
-                methodname: "local_message_favourites",
-                args: params,
-            }]);
-            promise[0]
-                .done(function() {
-                    // Success.
-                    window.location.reload(true);
-                })
-                .fail(function() {
-                    // Failed.
-                });
-        }
-
-    });
+    }
+    let mymodal = e.target.closest(selectors.actions.mymodal);
+    if (mymodal) {
+      const myObject = mymodal.getAttribute("data-object");
+      const data = JSON.parse(myObject);
+      ModalFactory.create({
+        title: "View Messages",
+        body: Templates.render("local_message/viewmsg", data),
+      }).done(function(modal) {
+        modal.setLarge();
+        modal.getRoot().on(ModalEvents.hidden, function(e) {
+          e.preventDefault();
+          window.location.reload(true);
+        });
+        modal.show();
+      });
+    }
+  });
 };

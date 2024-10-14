@@ -23,6 +23,7 @@
  */
 
 require_once(__DIR__ . "/../../config.php");
+use block_listallcourses\manager as manager;
 
 global $DB, $USER;
 
@@ -57,23 +58,20 @@ $sql = "SELECT m.id, m.messagetext, m.messagetype, f.id as fid
 $result = $DB->get_records_sql($sql);
 $records = array_values($result);
 
-$api = new local_message\api();
-
+// $api = new local_message\api();
 
 // $result = $api->get_messages();
 
-
+// Now you can use $timezone to display or format times
+// print_object();
+// die;
 echo $OUTPUT->header();
-
 $templatecontext = [
     "messages" => $records,
     'manage' => $manage,
-    "actionpage" => get_string('actionpage', 'local_message'),
-    "updatename" => get_string('updatename', 'local_message'),
-    "deletename" => get_string('deletename', 'local_message'),
-    "manageurl" => new moodle_url('/local/message/manage.php'),
+    "wwwroot" => $CFG->wwwroot,
 ];
-
-echo $OUTPUT->render_from_template("local_message/viewmsg", $templatecontext);
-
+$jsondata = json_encode($templatecontext);
+echo html_writer::tag('button', 'click to open modal',
+    ['data-object' => $jsondata, 'data-action' => "my_modal", 'class' => 'mx-3 btn btn-link text-warning btn-lg mylink']);
 echo $OUTPUT->footer();

@@ -17,35 +17,40 @@
 {{!
     @template local_message/viewmsg
 
-    TODO describe template viewmsg
 
     Example context (json):
     {
+
     }
 }}
 <style>
   /* Custom styles for the star icon */
   .star {
     cursor: pointer;
-    transition: color 0.3s ease; /* Smooth color transition */
+    transition: color 0.3s ease;
+    /* Smooth color transition */
   }
 
   .star.favorited {
-    color: gold; /* Color of the filled star */
+    color: gold;
+    /* Color of the filled star */
   }
 
   .star:hover {
-    color: orange; /* Color change on hover */
+    color: orange;
+    /* Color change on hover */
   }
 </style>
 
-<table class="display" id="viewmsgtable">
+<table class="display mytable">
   <thead class="table-dark">
     <tr>
       <th class="text-center">{{#str}}idnumber{{/str}}</th>
       <th class="text-center">{{#str}}messagetext, local_message{{/str}}</th>
       <th class="text-center">{{#str}}messagetype, local_message{{/str}}</th>
-      {{#manage}}<th class="text-center">{{#str}}actions, local_message{{/str}}</th>{{/manage}}
+      {{#manage}}
+      <th class="text-center">{{#str}}actions, local_message{{/str}}</th>
+      {{/manage}}
       <th class="text-center">{{#str}}starred, local_message{{/str}}</th>
     </tr>
   </thead>
@@ -60,7 +65,7 @@
         <a href="update.php?id={{ id }}" class="mx-2"
           ><i
             class="fa fa-pencil fa-fw"
-            title="{{ updatename }}"
+            title="{{#str}} updatename, local_message {{/str}}"
             aria-hidden="true"
           ></i
         ></a>
@@ -74,10 +79,11 @@
           data-modal-yes-button-str='["delete", "core"]'
           data-modal-destination="/moodle/local/message/delete.php?id={{ id }}"
         >
-          {{#pix}} t/delete, core, {{ deletename }} {{/pix}}
+          {{#pix}} t/delete, core, {{#str}} deletename, local_message {{/str}}
+          {{/pix}}
         </a>
-    </td>
-    {{/manage}}
+      </td>
+      {{/manage}}
       {{#fid}}
       <td>
         <span
@@ -106,22 +112,12 @@
     {{/messages}}
   </tbody>
 </table>
-
-<a href="{{ manageurl }}" class="btn btn-primary">{{ actionpage }}</a>
-<button
-    class="btn btn-warning"
-    data-action="core_payment/triggerPayment"
-    data-component="enrol_fee"
-    data-paymentarea="fee"
-    data-itemid="{{itemid}}"
-    data-cost="{{coststring}}"
-    data-description="{{description}}"
+<a href="{{ wwwroot }}/local/message/manage.php" class="btn btn-primary"
+  >{{#str}} actionpage, local_message {{/str}}</a
 >
-    {{# str }} sendpaymentbutton, enrol_fee {{/ str }}
-</button>
 
 {{#js}}
-    require(['core_payment/gateways_modal'], function(modal) {
-        modal.init();
-    });
+require(['local_message/my_datatables'], function (e) {
+    e.init();
+});
 {{/js}}

@@ -25,7 +25,7 @@
 namespace local_message;
 
 define('MOODLE_URL', 'http://localhost/moodle/webservice/rest/server.php');
-define('TOKEN', 'fec45e9104617ff4b31e1f6657447a0c');
+define('TOKEN', '86ecc344b1e05587e14e109b3d0f221b');
 
 /**
  * Summary of get_messages api

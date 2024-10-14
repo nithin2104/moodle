@@ -25,72 +25,135 @@
 }}
 
 <div class="d-flex">
-<div class="container p-2 m-3">
-<h5>{{#str}}moodleformtext, local_message{{/str}}</h5>
+  <div class="container p-2 m-3">
+    <h5>{{#str}}moodleformtext, local_message{{/str}}</h5>
 
-<a href={{createmsgurl}} role="button" aria-hidden="true" class="btn btn-primary" title={{createmsg}}><i class="fa fa-plus">
-</i>&nbsp;{{createmsg}}</a>
-<a href={{viewmsgurl}} role="button" aria-hidden="true" class="btn btn-info" title={{viewmsg}}><i class="fa fa-eye">
-</i>&nbsp;{{viewmsg}}</a>
+    <a
+      href="{{ createmsgurl }}"
+      role="button"
+      aria-hidden="true"
+      class="btn btn-primary"
+      title="{{ createmsg }}"
+      ><i class="fa fa-plus"> </i>&nbsp;{{ createmsg }}</a
+    >
+    <a
+      href="{{ viewmsgurl }}"
+      role="button"
+      aria-hidden="true"
+      class="btn btn-info"
+      title="{{ viewmsg }}"
+      ><i class="fa fa-eye"> </i>&nbsp;{{ viewmsg }}</a
+    >
+  </div>
+
+  <div class="container p-2 m-3">
+    <h5>{{#str}}dynamicformtext, local_message{{/str}}</h5>
+
+    <a
+      role="button"
+      aria-hidden="true"
+      class="btn btn-primary"
+      data-action="updatemodal"
+      title="{{#str}}addtitle,
+    local_message{{/str}}"
+      ><i class="fa fa-plus"></i>&nbsp;{{#str}}addtitle, local_message{{/str}}</a
+    >
+  </div>
 </div>
 
-<div class="container p-2 m-3">
-<h5>{{#str}}dynamicformtext, local_message{{/str}}</h5>
-
-<a role="button" aria-hidden="true" class="btn btn-primary" data-action="updatemodal" title="{{#str}}addtitle,
-    local_message{{/str}}"><i class="fa fa-plus"></i>&nbsp;{{#str}}addtitle, local_message{{/str}}</a>
-</div>
-</div>
-
-<hr class="m-0 border border-top-2 border-secondary my-3"></hr>
+<hr class="m-0 border border-top-2 border-secondary my-3" />
 
 <table class="display" id="viewmsgtable">
-<thead class="table-dark text-center">
+  <thead class="table-dark text-center">
     <tr>
-        <th class="text-center"> {{#str}}profile, local_message{{/str}} </th>
-        <th class="text-center"> {{#str}}fullname, local_message{{/str}} </th>
-        <th class="text-center"> {{#str}}description, local_message{{/str}} </th>
-        <th class="text-center"> {{#str}}actions, local_message{{/str}} </th>
+      <th class="text-center">{{#str}}profile, local_message{{/str}}</th>
+      <th class="text-center">{{#str}}fullname, local_message{{/str}}</th>
+      <th class="text-center">{{#str}}description, local_message{{/str}}</th>
+      <th class="text-center">{{#str}}actions, local_message{{/str}}</th>
     </tr>
-</thead>
-<tbody class="text-center">
-{{#details}}
-<tr>
-
-    <td> <img src="{{profile}}" height="50" width="50" style="border-radius:50%" alt="User Profile"> </td>
-    <td>{{fullname}}</td>
-    <td>{{description}}</td>
-    <td>
-        <a role="button" aria-hidden="true" class="text-info mx-3" data-action="viewmodal" data-id={{id}} title="{{#str}}viewdetails,
-        local_message{{/str}}"><i class="fa fa-eye fa-fw"></i></a>
+  </thead>
+  <tbody class="text-center">
+    {{#details}}
+    <tr>
+      <td>
+        <img
+          src="{{ profile }}"
+          height="50"
+          width="50"
+          style="border-radius: 50%"
+          alt="User Profile"
+        />
+      </td>
+      <td>{{ fullname }}</td>
+      <td>{{ description }}</td>
+      <td>
+        <a
+          role="button"
+          aria-hidden="true"
+          class="text-info mx-3"
+          data-action="viewmodal"
+          data-id="{{ id }}"
+          title="{{#str}}viewdetails,
+        local_message{{/str}}"
+          >{{#pix}} t/hide, core{{/pix}}</a
+        >
         {{#manage}}
-        <a role="button" aria-hidden="true" class="text-primary mx-3" data-action="updatemodal" data-id={{id}} data-name={{fullname}}
-        title="{{#str}}updatename, local_message{{/str}}"><i class="fa fa-pencil fa-fw"></i></a>
-        <a role="button" class="text-success mx-3" href="{{profile}}" download="{{profile}}" title="{{#str}}download{{/str}}"><i class="fa fa-download">
-        </i></a>
-        <a role="button" aria-hidden="true" class="text-danger mx-3" data-action="deletemodal" data-id={{id}} data-name={{fullname}}
-        title="{{#str}}deletename,local_message{{/str}}">{{#pix}}t/delete, core{{/pix}}</a>
+        <a
+          role="button"
+          aria-hidden="true"
+          class="text-primary mx-3"
+          data-action="updatemodal"
+          data-id="{{ id }}"
+          data-name="{{ fullname }}"
+          title="{{#str}}updatename, local_message{{/str}}"
+          >{{#pix}} t/editinline, core{{/pix}}</a
+        >
+        <a
+          role="button"
+          class="text-success mx-3"
+          href="{{ profile }}"
+          download="{{ profile }}"
+          title="{{#str}}download{{/str}}"
+        >
+          {{#pix}} t/download, core{{/pix}}</a
+        >
+        <a
+          role="button"
+          aria-hidden="true"
+          class="text-danger mx-3"
+          data-action="deletemodal"
+          data-id="{{ id }}"
+          data-name="{{ fullname }}"
+          title="{{#str}}deletename,local_message{{/str}}"
+          >{{#pix}} t/delete, core{{/pix}}</a
+        >
         {{/manage}}
-    </td>
-</tr>
-{{/details}}
-</tbody>
-
+      </td>
+    </tr>
+    {{/details}}
+  </tbody>
 </table>
 {{#manage}}
-<a role="button" aria-hidden="true" class="btn btn-success" data-action="uploadrecords" title="{{#str}}upload{{/str}}">
-<i class="fa fa-upload"></i>&ensp;{{#str}}upload{{/str}}</a>
-<a role="button" aria-hidden="true" class="btn btn-success" href="recordform.php" title="{{#str}}upload{{/str}}">
-<i class="fa fa-upload"></i>&ensp;{{#str}}upload{{/str}}</a>
-<a role="button" class="btn btn-secondary" href="download.php" title="{{#str}}download{{/str}}"><i class="fa fa-download">
-</i>&ensp;{{#str}}download{{/str}}</a>
+<a
+  role="button"
+  aria-hidden="true"
+  class="btn btn-success"
+  data-action="uploadrecords"
+  title="{{#str}}upload{{/str}}"
+>
+  <i class="fa fa-upload"></i>&ensp;{{#str}}upload{{/str}}</a
+>
+<!-- <a role="button" aria-hidden="true" class="btn btn-success" href="recordform.php" title="{{#str}}upload{{/str}}">
+<i class="fa fa-upload"></i>&ensp;{{#str}}upload{{/str}}</a> -->
+<a
+  role="button"
+  class="btn btn-secondary"
+  href="download.php"
+  title="{{#str}}download{{/str}}"
+  ><i class="fa fa-download"> </i>&ensp;{{#str}}download{{/str}}</a
+>
 {{/manage}}
 
-
-
-
 {{#js}}
-    require(['local_message/messageform'], function(s) {
-        s.init();
-    });
+require(['local_message/messageform'], function(s) { s.init(); });
 {{/js}}

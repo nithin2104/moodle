@@ -1,0 +1,72 @@
+* {
+    box-shadow: none;
+}
+.navbody {
+    background-color: #f98012;
+}
+.navlink {
+    box-shadow: none;
+    transition: transform 0.1s ease-in-out;
+    background: transparent;
+}
+.navlink:hover {
+    transform: scale(1.1);
+}
+.navlink:focus {
+    box-shadow: none;
+    background: transparent;
+}
+.nav-link {
+    transition: transform 0.1s ease-in-out;
+    background: transparent;
+}
+.nav-link:hover {
+    transform: scale(1.1);
+}
+.moremenu .nav-link:hover {
+    background-color: transparent !important;
+    border: none;
+}
+.moremenu .nav-link:focus {
+    background-color: transparent !important;
+    box-shadow: none;
+
+}
+.moremenu .nav-link.active {
+    font-weight: 600;
+    background-color: transparent !important;
+    border-bottom-color: #686566;
+}
+
+.navbar.fixed-top .usermenu .dropdown .dropdown-toggle:focus {
+    background-color: transparent !important;
+    box-shadow: none;
+
+}
+.userinitials {
+    background-color: white;
+}
+
+.navbar.fixed-top #usernavigation .nav-link {
+    background-color: transparent !important;
+    box-shadow: none;
+}
+.editmode-switch-form label {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+    border: none;
+    background-color: #fff;
+}
+.custom-control-label::before {
+    border: none;
+}
+.custom-switch .custom-control-label::after {
+background-color: #f98012;
+}
+.custom-switch .custom-control-input:checked~.custom-control-label::after {
+    background-color: #f98012;
+    transform: translateX(.9375rem);
+}

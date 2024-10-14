@@ -1124,6 +1124,7 @@ class mysqli_native_moodle_database extends moodle_database {
         if (empty($params)) {
             return $sql;
         }
+
         // ok, we have verified sql statement with ? and correct number of params
         $parts = array_reverse(explode('?', $sql));
         $return = array_pop($parts);
@@ -1381,7 +1382,6 @@ class mysqli_native_moodle_database extends moodle_database {
      */
     public function insert_record($table, $dataobject, $returnid=true, $bulk=false) {
         $dataobject = (array)$dataobject;
-
         $columns = $this->get_columns($table);
         if (empty($columns)) {
             throw new dml_exception('ddltablenotexist', $table);
