@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component    = 'local_coursebank';
 $plugin->release      = '1.0';
-$plugin->version      = 2024100300;
+$plugin->version      = 2024100301;
 $plugin->requires     = 2022041900;
 $plugin->supported    = [400, 404];
 $plugin->maturity     = MATURITY_STABLE;

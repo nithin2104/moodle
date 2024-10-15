@@ -28,6 +28,7 @@
         max-height: 190px;
         overflow-y: auto;
     }
+
 </style>
 <div class="my-5">
     <div class="mb-2">
@@ -50,14 +51,6 @@
             <a class="icon-no-margin btn btn-secondary text-nowrap" title="upload" data-action="upload">
                 <i class="icon fa fa-upload fa-fw" aria-hidden="true"></i> upload
             </a>
-        </div>
-        <div class="my-2">
-            {{< core/search_input_auto }}
-            {{$label}}{{#str}}
-                searchcontentbankbyname, contentbank
-            {{/str}}{{/label}}
-            {{$placeholder}}{{#str}} search, core {{/str}}{{/placeholder}}
-            {{/ core/search_input_auto }}
         </div>
     </div>
     <div class="pb-3 border">

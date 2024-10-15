@@ -27,7 +27,7 @@ require('../../config.php');
 require_login();
 
 $contextid    = optional_param('contextid', \context_system::instance()->id, PARAM_INT);
-$id    = optional_param('id', 0, PARAM_INT);
+$id    = required_param('id', PARAM_INT);
 $action    = optional_param('action', '', PARAM_TEXT);
 $context = context::instance_by_id($contextid, MUST_EXIST);
 

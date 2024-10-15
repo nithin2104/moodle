@@ -39,7 +39,8 @@ function theme_logintheme_get_main_scss_content($theme) {
     if ($filename == 'plain.scss') {
         $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/plain.scss');
     } else {
-        $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');
+        // To change all links from blue to orange.
+        $scss .= file_get_contents($CFG->dirroot . '/theme/logintheme/scss/preset/default.scss');
     }
 
     return $scss;

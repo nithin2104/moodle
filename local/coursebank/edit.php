@@ -74,8 +74,10 @@ if ($context->id == \context_system::instance()->id) {
     $PAGE->set_context($context);
 }
 if (!empty($record)) {
-    $PAGE->navbar->add($record->name, new \moodle_url('/local\coursebank/view.php',
-                    ['contextid' => $contextid, 'id' => $id]));
+    $PAGE->navbar->add($record->name, new \moodle_url(
+        '/local\coursebank/view.php',
+        ['contextid' => $contextid, 'id' => $id]
+    ));
 }
 $PAGE->navbar->add($breadcrumbtitle);
 $PAGE->set_title($title);

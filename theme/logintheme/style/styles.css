@@ -5,6 +5,7 @@
     background-color: #f98012;
 }
 .navlink {
+    color: aliceblue !important;
     box-shadow: none;
     transition: transform 0.1s ease-in-out;
     background: transparent;
@@ -16,6 +17,11 @@
     box-shadow: none;
     background: transparent;
 }
+.primary-navigation .navigation .nav-link , .navbar-light .navbar-nav .nav-link , .usermenu .btn {
+    color: aliceblue !important;
+
+}
+
 .nav-link {
     transition: transform 0.1s ease-in-out;
     background: transparent;
@@ -45,6 +51,7 @@
 }
 .userinitials {
     background-color: white;
+    color: #f98012;
 }
 
 .navbar.fixed-top #usernavigation .nav-link {

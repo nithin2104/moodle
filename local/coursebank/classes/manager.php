@@ -33,15 +33,15 @@ class manager {
      */
     private $timecreated;
     /**
-     * Summary of timecreated
+     * Summary of modified
      * @var $timemodified
      */
     private $timemodified;
     /**
-     * Summary of timecreated
-     * @var $context
+     * Summary of context
+     * @var $contextid
      */
-    private $context;
+    private $contextid;
 
     /**
      * Summary of __construct
@@ -51,8 +51,7 @@ class manager {
         global $USER;
         $this->timecreated = time();
         $this->timemodified = time();
-        $this->userid = $USER->id;
-        $this->context = \context::instance_by_id($contextid);
+        $this->contextid = $contextid;
     }
     /**
      * Summary of create_update
@@ -61,8 +60,7 @@ class manager {
      */
     public function create_update($data) {
         global $DB, $CFG, $USER;
-
-        $context = $this->context;
+        $contextid = $this->contextid;
         $contextuser = \context_user::instance($USER->id);
         $item = $data->coursebank;
         $fs = get_file_storage();
@@ -75,13 +73,13 @@ class manager {
         $data->name = $filename;
         $data->contenttype = $extension;
         $data->itemid = $data->coursebank;
-        $data->contextid = $context->id;
+        $data->contextid = $contextid;
         $data->usercreated = $USER->id;
         $data->timecreated = $this->timecreated;
         $data->timemodified = $this->timemodified;
         $itemid = $DB->insert_record('local_coursebank', $data);
         $filerecord = [
-            'contextid' => $context->id,
+            'contextid' => $contextid,
             'component' => 'local_coursebank',
             'filearea' => 'coursebank',
             'itemid' => $itemid,
@@ -99,7 +97,7 @@ class manager {
     public function get_coursebank_files() {
         global $DB, $CFG, $SITE, $OUTPUT;
         $data = [];
-        $result = $DB->get_records('local_coursebank', ['contextid' => $this->context->id]);
+        $result = $DB->get_records('local_coursebank', ['contextid' => $this->contextid]);
         foreach ($result as $rec) {
             $coursebank = new \stdClass();
             $coursebank->id = $rec->id;
@@ -161,7 +159,7 @@ class manager {
      * @return \stdClass
      */
     public function get_coursecontent_by_id($id) {
-        global $DB, $CFG, $SITE;
+        global $DB;
         $data = new \stdClass();
         $rec = $DB->get_record('local_coursebank', ['id' => $id]);
         $data->id = $rec->id;
@@ -193,20 +191,20 @@ class manager {
                                             'id' => $rec->id,
                                         ];
                             $data->editcontenturl = (new \moodle_url('/local/coursebank/edit.php', $urlparams))->out(false);
-            break;
+                            break;
             case 'jpeg' :   $content = "<img src='$data->file' class='img-fluid' alt='No Img' />";
-            break;
+                            break;
             case 'jpg' :    $content = "<img src='$data->file' class='img-fluid' alt='No Img' />";
-            break;
+                            break;
             case 'png' :    $content = "<img src='$data->file' class='img-fluid' alt='No Img' />";
-            break;
+                            break;
             case 'mp4' :    $content = "<video width='100%' height='100%' controls>
                                         <source src='$data->file'' type='video/mp4'>
                                         Your browser does not support the video tag.
                                         </video>";
-            break;
+                            break;
             case 'pdf' :    $content = "<iframe src='$data->file' width='100%' height='500px' frameborder='0'></iframe>";
-            break;
+                            break;
             default :   $content = "<p class='text-muted'>Preview not available..!</p>";
         }
         $data->contenthtml = $content;
