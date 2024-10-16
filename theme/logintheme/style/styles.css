@@ -1,5 +1,10 @@
 * {
-    box-shadow: none;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+#page-footer , .footer-content-debugging {
+    background-color: #f98012 !important;
 }
 .navbody {
     background-color: #f98012;
@@ -13,15 +18,21 @@
 .navlink:hover {
     transform: scale(1.1);
 }
-.navlink:focus {
+.navlink:focus , a:not([class]):focus{
     box-shadow: none;
     background: transparent;
 }
-.primary-navigation .navigation .nav-link , .navbar-light .navbar-nav .nav-link , .usermenu .btn {
+.primary-navigation .navigation .nav-link , .navbar-light .navbar-nav .nav-link , .usermenu .btn, .usermenu .login a,
+.langmenu .btn{
     color: aliceblue !important;
 
 }
 
+.langmenu .icon {
+    padding: 3px;
+    border: 1px solid aliceblue;
+    border-radius: 50%;
+}
 .nav-link {
     transition: transform 0.1s ease-in-out;
     background: transparent;
