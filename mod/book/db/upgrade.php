@@ -55,6 +55,20 @@ function xmldb_book_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021052501, 'book');
     }
 
+    if ($oldversion < 2022041901) {
+
+        // Define field parent to be added to book_chapters.
+        $table = new xmldb_table('book_chapters');
+        $field = new xmldb_field('parent', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'importsrc');
+
+        // Conditionally launch add field parent.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Book savepoint reached.
+        upgrade_mod_savepoint(true, 2022041901, 'book');
+    }
     // Automatically generated Moodle v4.0.0 release upgrade line.
     // Put any upgrade step following this.
 

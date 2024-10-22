@@ -34,7 +34,7 @@
 function xmldb_local_coursebank_upgrade($oldversion) {
     global $DB;
     $dbman = $DB->get_manager();
-    if ($oldversion < 2024100301) {
+    if ($oldversion < 2024100302) {
 
         // Define key contextid (foreign) to be added to local_coursebank.
         $table = new xmldb_table('local_coursebank');
@@ -42,15 +42,13 @@ function xmldb_local_coursebank_upgrade($oldversion) {
 
         // Launch add key contextid.
         $dbman->add_key($table, $key);
-
-        // Define key usercreated (foreign) to be added to local_coursebank.
         $key = new xmldb_key('usercreated', XMLDB_KEY_FOREIGN, ['usercreated'], 'user', ['id']);
 
         // Launch add key usercreated.
         $dbman->add_key($table, $key);
 
         // Coursebank savepoint reached.
-        upgrade_plugin_savepoint(true, 2024100301, 'local', 'coursebank');
+        upgrade_plugin_savepoint(true, 2024100302, 'local', 'coursebank');
     }
 
     return true;

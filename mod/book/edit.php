@@ -103,8 +103,44 @@ if ($mform->is_cancelled()) {
         $data->timecreated   = time();
         $data->timemodified  = time();
         $data->importsrc     = '';
-        $data->content       = '';          // updated later
-        $data->contentformat = FORMAT_HTML; // updated later
+        $data->content       = ''; // Updated later.
+        $data->contentformat = FORMAT_HTML; // Updated later.
+        print_object($data);
+        if ($data->pagenum != 1) {
+            if ($data->subchapter) {
+                $p = $DB->get_field_select('book_chapters', 'id', 'pagenum  = :pagenum AND bookid = :bid', ['pagenum' => $data->pagenum - 1, 'bid' => $data->bookid]);
+                $sql = "SELECT MAX(pagenum) FROM {book_chapters} WHERE parent = $p";
+                $pn = $DB->get_field_sql($sql);
+                if ($pn == 0) {
+                    $pn = $DB->get_field('book_chapters', 'pagenum', ['id' => $p]);
+                }
+                $data->pagenum = $pn + 1;
+                $data->subchapter = 1;
+                $data->parent = $p;
+            } else {
+                $p = $DB->get_field_select('book_chapters', 'id', 'pagenum  = :pagenum AND bookid = :bid', ['pagenum' => $data->pagenum - 1, 'bid' => $data->bookid]);
+                $cp = $DB->get_field('book_chapters', 'parent', ['id' => $p]);
+                $data->parent = $cp;
+                print($cp);
+                if ($cp != 0) {
+
+                    $sql = "SELECT MAX(pagenum) FROM {book_chapters} WHERE parent = $cp";
+                    $pn = $DB->get_field_sql($sql);
+                    $data->pagenum = $pn + 1;
+                    $data->subchapter = 1;
+                } else {
+                    $sql = "SELECT MAX(pagenum) FROM {book_chapters} WHERE parent = $p";
+                    $pn = $DB->get_field_sql($sql);
+                    if ($pn == 0) {
+                        $pn = $DB->get_field('book_chapters', 'pagenum', ['id' => $p]);
+                    }
+                    $data->pagenum = $pn + 1;
+                }
+            }
+        } else {
+            $data->parent = 0;
+        }
+
 
         // make room for new page
         $sql = "UPDATE {book_chapters}

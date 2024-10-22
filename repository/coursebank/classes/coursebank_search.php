@@ -45,6 +45,7 @@ class coursebank_search {
     public static function get_search_contents(string $search): array {
         global $DB;
 
+        $sql = "SELECT * FROM {local_coursebank}";
         if (!empty($search)) {
             $sql = "SELECT c.* FROM {local_coursebank} c WHERE c.name like '%$search%' ORDER BY c.name ASC";
         }

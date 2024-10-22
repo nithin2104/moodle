@@ -49,6 +49,47 @@ define ('BOOK_LINK_TOCONLY', '0');
 define ('BOOK_LINK_IMAGE', '1');
 define ('BOOK_LINK_TEXT', '2');
 
+function buildHierarchy($chapters) {
+    $indexed = [];
+
+    // Create an index of chapters by ID
+    foreach ($chapters as $chapter) {
+        $chapter->subchapter = []; // Initialize subchapter array
+        $indexed[$chapter->id] = $chapter;
+    }
+
+    // Build the hierarchy
+    foreach ($indexed as $chapter) {
+        if ($chapter->parent != 0) { // If it's a subchapter
+            $indexed[$chapter->parent]->subchapter[] = $chapter;
+        }
+    }
+    // Return only the top-level chapters (parent = 0)
+    return array_filter($indexed, function($chapter) {
+        return $chapter->parent == 0;
+    });
+}
+
+// Function to print the hierarchical structure
+function printHierarchy($chapters, $level = 0) {
+    $cmid = optional_param('id', 0, PARAM_INT);
+    global $CFG, $USER;
+    $output = '';
+    $output .= "<ul>";
+    foreach ($chapters as $chapter) {
+        $sc = is_null($chapter->subchapter) ? 0 : 1;
+        $output .= "<li style='list-style:none;'><a class='mr-2' href='$CFG->wwwroot/mod/book/view.php?id=$cmid&chapterid=$chapter->id'>".$chapter->title." "."text</a>
+        <a href='edit.php?cmid=$cmid&id=$chapter->id'><i class='icon fa fa-cog fa-fw'></i></a>
+        <a href='delete.php?id=$cmid&chapterid=$chapter->id&&sesskey=$USER->sesskey&&confirm=1'><i class='icon fa fa-trash fa-fw'></i></a>
+        <a href='edit.php?cmid=$cmid&pagenum=$chapter->pagenum&&subchapter=$sc'><i class='icon fa fa-plus fa-fw'></i></a>
+        </li>";
+        if (!empty($chapter->subchapter)) {
+            $output .= printHierarchy($chapter->subchapter, $level + 1);
+        }
+    }
+    $output .= "</ul>";
+    return $output;
+}
 /**
  * Preload book chapters and fix toc structure if necessary.
  *
@@ -62,10 +103,11 @@ define ('BOOK_LINK_TEXT', '2');
 function book_preload_chapters($book) {
     global $DB;
     $chapters = $DB->get_records('book_chapters', array('bookid' => $book->id), 'pagenum', 'id, pagenum,
-            subchapter, title, content, contentformat, hidden');
+            subchapter, title, content, contentformat, hidden, parent');
     if (!$chapters) {
         return array();
     }
+
 
     $prev = null;
     $prevsub = null;
@@ -128,7 +170,6 @@ function book_preload_chapters($book) {
         }
         $chapters[$id] = $ch;
     }
-
     return $chapters;
 }
 
@@ -171,7 +212,7 @@ function book_get_chapter_title($chid, $chapters, $book, $context) {
  * @param   bool|null   $edit       Whether the user is editing
  */
 function book_add_fake_block($chapters, $chapter, $book, $cm, $edit = null) {
-    global $PAGE, $USER;
+    global $PAGE, $USER, $DB;
 
     if ($edit === null) {
         if (has_capability('mod/book:edit', context_module::instance($cm->id))) {
@@ -186,7 +227,10 @@ function book_add_fake_block($chapters, $chapter, $book, $cm, $edit = null) {
     }
 
     $toc = book_get_toc($chapters, $chapter, $book, $cm, $edit);
-
+    // $chapters = $DB->get_records('book_chapters', array('bookid' => $book->id), 'pagenum', 'id, pagenum,
+    //         subchapter, title, content, contentformat, hidden, parent');
+    // $hierarchy = buildHierarchy($chapters);
+    // $toc = printHierarchy($hierarchy);
     $bc = new block_contents();
     $bc->title = get_string('toc', 'mod_book');
     $bc->attributes['class'] = 'block block_book_toc';
@@ -208,7 +252,6 @@ function book_add_fake_block($chapters, $chapter, $book, $cm, $edit = null) {
  */
 function book_get_toc($chapters, $chapter, $book, $cm, $edit) {
     global $USER, $OUTPUT;
-
     $toc = '';
     $nch = 0;   // Chapter number
     $ns = 0;    // Subchapter number

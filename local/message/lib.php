@@ -24,46 +24,6 @@
 
 use local_message\manager as manager;
 
-
-
-/**
- * Summary of local_message_before_footer
- * @return void
- */
-// function local_message_before_footer() {
-//     global $DB, $USER;
-
-//     $sql = "select lm.id, lm.messagetext, lm.messagetype from {local_message} lm
-//     minus {local_message_read} lmr on lm.id=lmr.messageid
-//     where lmr.userid <> :userid or lmr.userid is null;";
-//     $param = [
-//         "userid" => $USER->id,
-//     ];
-//     if ($USER->id != 0) {
-
-//         $messages = $DB->get_records_sql($sql, $param);
-//         // Add a notification of some kind.
-//         foreach ($messages as $message) {
-//             $type = \core\output\notification::NOTIFY_INFO;
-//             if ($message->messagetype === '0') {
-//                 $type = \core\output\notification::NOTIFY_SUCCESS;
-//             } else if ($message->messagetype === '1') {
-//                 $type = \core\output\notification::NOTIFY_WARNING;
-//             } else if ($message->messagetype === '2') {
-//                 $type = \core\output\notification::NOTIFY_ERROR;
-//             } else {
-//                 $type = \core\output\notification::NOTIFY_INFO;
-//             }
-//             \core\notification::add($message->messagetext, $type);
-//             $now = time();
-//             $readrecords = new stdClass();
-//             $readrecords->messageid = $message->id;
-//             $readrecords->userid = $USER->id;
-//             $readrecords->timeread = userdate($now);
-//             $DB->insert_record('local_message_read', $readrecords);
-//         }
-//     }
-// }
 /**
  * Summary of local_message_pluginfile
  * @param mixed $course
