@@ -14,17 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace local_notes\output;
+
 /**
- * Version information for local_notes
+ * Class mobile
  *
  * @package    local_notes
- * @copyright  2024 LMSCloud.io
+ * @copyright  2024 Nithin kumar nithin54k@gmail.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class mobile {
+    /**
+     * Summary of view_hello
+     * @return array[]
+     */
+    public static function view_hello() {
+        return [
+            'templates' => [
+                [
+                    'id' => 'main',
+                    'html' => '<h1 class="text-center">{{ "plugin.local_notes.pluginname" | translate }}</h1>',
+                ],
+            ],
+        ];
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->component    = 'local_notes';
-$plugin->version      = 2024082805;
-$plugin->requires     = 2022041900;
-$plugin->maturity     = MATURITY_STABLE;
+    }
+}

@@ -75,7 +75,6 @@ if ($data = $mform->get_data()) {
 }
 
 echo $OUTPUT->header();
-
 echo html_writer::tag('h2', get_string('usernotes', 'local_notes'));
 
 $mform->display();

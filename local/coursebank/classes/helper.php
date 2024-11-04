@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Contains helper class for the content bank.
+ * Contains helper class for the course bank.
  *
  * @package    local_coursebank
  * @copyright  2020 Amaia Anabitarte <amaia@moodle.com>
@@ -25,7 +25,7 @@
 namespace local_coursebank;
 
 /**
- * Helper class for the content bank.
+ * Helper class for the course bank.
  *
  * @package    local_coursebank
  * @copyright  2020 Amaia Anabitarte <amaia@moodle.com>

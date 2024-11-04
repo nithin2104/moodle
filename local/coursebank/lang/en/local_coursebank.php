@@ -39,3 +39,4 @@ $string['coursebank:viewunlistedcontent'] = 'View unlisted content from the cour
 $string['coursebank:upload'] = 'Upload new content to the content bank';
 $string['choosecontext'] = 'Choose course or category...';
 $string['nocontentavailable'] = 'No content available...';
+$string['searchcontentbankbyname'] = 'Search by name...';

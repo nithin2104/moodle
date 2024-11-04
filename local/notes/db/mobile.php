@@ -15,16 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for local_notes
+ * Mobile app areas for Notes Plugin
+ *
+ * Documentation: {@link https://moodledev.io/general/app/development/plugins-development-guide}
  *
  * @package    local_notes
- * @copyright  2024 LMSCloud.io
+ * @copyright  2024 Nithin kumar nithin54k@gmail.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component    = 'local_notes';
-$plugin->version      = 2024082805;
-$plugin->requires     = 2022041900;
-$plugin->maturity     = MATURITY_STABLE;
+$addons = [
+    'local_notes' => [
+        'handlers' => [
+            'hello' => [
+                'delegate' => 'CoreCourseOptionsDelegate',
+                'method' => 'view_hello',
+                'displaydata' => [
+                    'title' => 'pluginname',
+                    'icon' => 'earth',
+                ],
+            ],
+        ],
+        'lang' => [
+            ['pluginname', 'local_notes'],
+        ],
+    ],
+  ];

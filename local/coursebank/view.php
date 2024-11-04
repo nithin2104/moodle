@@ -31,6 +31,7 @@ $id    = required_param('id', PARAM_INT);
 $action    = optional_param('action', '', PARAM_TEXT);
 $context = context::instance_by_id($contextid, MUST_EXIST);
 
+require_capability('local/coursebank:access', $context);
 
 $url = new moodle_url('/local/coursebank/view.php', ['contextid' => $contextid, 'id' => $id]);
 $PAGE->set_url($url);
@@ -58,6 +59,7 @@ $PAGE->set_pagetype('coursebank');
 $PAGE->set_secondary_active_tab('coursebank');
 
 if ($action == 'delete') {
+    require_capability('local/coursebank:access', $context);
     $DB->delete_records('local_coursebank', ['id' => $id]);
     redirect(new moodle_url('/local/coursebank/index.php', ['contextid' => $contextid]), 'Deleted successfully...');
 }

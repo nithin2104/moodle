@@ -29,7 +29,7 @@ require_login();
 $contextid    = optional_param('contextid', \context_system::instance()->id, PARAM_INT);
 $context = context::instance_by_id($contextid, MUST_EXIST);
 
-
+require_capability('local/coursebank:access', $context);
 $url = new moodle_url('/local/coursebank/index.php', ['contextid' => $contextid]);
 $PAGE->set_url($url);
 $PAGE->set_context(context_system::instance());
